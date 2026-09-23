@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { MConfigProvider, zhCN } from 'morya-ui'
 </script>
 
 <template>
-  <HelloWorld />
+  <MConfigProvider :locale="zhCN">
+    <RouterView />
+  </MConfigProvider>
 </template>
