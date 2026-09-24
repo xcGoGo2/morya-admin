@@ -21,6 +21,7 @@ const { signIn } = useAuthStore()
 
 const formRef = ref<FormInstance | null>(null)
 const submitting = ref(false)
+const formError = ref('')
 
 const model = reactive({
   username: 'admin',
@@ -40,6 +41,7 @@ const features = [
 ]
 
 async function onSubmit() {
+  formError.value = ''
   const { valid } = await formRef.value!.validate()
   if (!valid) return
 
@@ -50,6 +52,8 @@ async function onSubmit() {
     message.success(`欢迎回来，${user.nickname}`)
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     void router.push(redirect)
+  } catch {
+    formError.value = '登录没有完成，请再试一次。'
   } finally {
     submitting.value = false
   }
@@ -99,6 +103,7 @@ async function onSubmit() {
           validate-on="submit"
           @submit="onSubmit"
         >
+          <p v-if="formError" class="login-alert" role="alert">{{ formError }}</p>
           <MFormItem label="账号" name="username">
             <template #default="{ id, invalid }">
               <MInput
@@ -166,35 +171,31 @@ async function onSubmit() {
 .login-brand {
   position: relative;
   overflow: hidden;
-  color: var(--m-color-on-emphasis);
+  color: var(--m-color-text);
   background:
     radial-gradient(
-      55% 45% at 85% 8%,
-      color-mix(in srgb, var(--m-color-help) 55%, transparent),
-      transparent 62%
-    ),
-    radial-gradient(
-      50% 42% at 8% 92%,
-      color-mix(in srgb, var(--m-color-info) 42%, transparent),
-      transparent 60%
+      80% 60% at 10% 20%,
+      color-mix(in srgb, var(--m-color-primary) 22%, transparent),
+      transparent 55%
     ),
     linear-gradient(
-      140deg,
-      color-mix(in srgb, var(--m-color-primary) 78%, var(--m-color-contrast)),
-      var(--m-color-primary) 52%,
-      var(--m-color-help)
+      165deg,
+      color-mix(in srgb, var(--m-color-primary) 16%, var(--m-color-surface)) 0%,
+      var(--m-color-surface) 55%,
+      color-mix(in srgb, var(--m-color-border) 35%, var(--m-color-surface)) 100%
     );
+  border-right: 1px solid var(--m-color-border);
 }
 
 .login-brand__grid {
   position: absolute;
   inset: 0;
-  opacity: 0.16;
+  opacity: 0.35;
   background-image:
-    linear-gradient(color-mix(in srgb, var(--m-color-on-emphasis) 60%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--m-color-on-emphasis) 60%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--m-color-primary) 18%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--m-color-primary) 18%, transparent) 1px, transparent 1px);
   background-size: 3.5rem 3.5rem;
-  mask-image: radial-gradient(circle at 60% 40%, var(--m-color-contrast) 0%, transparent 72%);
+  mask-image: radial-gradient(circle at 30% 70%, var(--m-color-contrast) 0%, transparent 72%);
   pointer-events: none;
 }
 
@@ -210,7 +211,7 @@ async function onSubmit() {
   height: 26rem;
   top: -7rem;
   right: -5rem;
-  background: color-mix(in srgb, var(--m-color-on-emphasis) 18%, transparent);
+  background: color-mix(in srgb, var(--m-color-primary) 16%, transparent);
 }
 
 .login-brand__blob--b {
@@ -218,7 +219,7 @@ async function onSubmit() {
   height: 22rem;
   bottom: -8rem;
   left: -4rem;
-  background: color-mix(in srgb, var(--m-color-on-emphasis) 12%, transparent);
+  background: color-mix(in srgb, var(--m-color-primary) 10%, transparent);
 }
 
 .login-brand__inner {
@@ -247,7 +248,8 @@ async function onSubmit() {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--m-radius-md);
-  background: color-mix(in srgb, var(--m-color-on-emphasis) 18%, transparent);
+  color: var(--m-color-on-emphasis);
+  background: var(--m-color-primary);
   box-shadow: var(--m-shadow-md);
 }
 
@@ -264,7 +266,7 @@ async function onSubmit() {
   max-width: 28rem;
   font-size: var(--m-font-size-sm);
   line-height: 1.8;
-  opacity: 0.78;
+  color: var(--m-color-text-muted);
 }
 
 .login-brand__feats {
@@ -289,7 +291,8 @@ async function onSubmit() {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--m-color-on-emphasis) 16%, transparent);
+  background: color-mix(in srgb, var(--m-color-primary) 12%, transparent);
+  color: var(--m-color-primary);
 }
 
 .login-brand__foot {
@@ -298,7 +301,7 @@ async function onSubmit() {
   bottom: var(--m-space-6);
   margin: 0;
   font-size: var(--m-font-size-xs);
-  opacity: 0.5;
+  color: var(--m-color-text-muted);
 }
 
 /* ---------- 表单区 ---------- */
@@ -361,10 +364,19 @@ async function onSubmit() {
   font-weight: 600;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .login-panel {
-    animation: login-panel-in 420ms ease both;
-  }
+.login-alert {
+  margin: 0 0 var(--m-space-4);
+  padding: var(--m-space-3) var(--m-space-4);
+  border: 1px solid color-mix(in srgb, var(--m-color-danger) 40%, var(--m-color-border));
+  border-radius: var(--m-radius-md);
+  background: color-mix(in srgb, var(--m-color-danger) 10%, var(--m-color-surface));
+  color: var(--m-color-danger);
+  font-size: var(--m-font-size-sm);
+  line-height: 1.45;
+}
+
+[data-m-motion='full'] .login-panel {
+  animation: login-panel-in 420ms ease both;
 }
 
 @keyframes login-panel-in {

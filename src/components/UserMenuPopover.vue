@@ -2,13 +2,12 @@
 import { logoutApi } from '../api/auth'
 import { useAuthStore } from '../stores/auth'
 import { useTabsStore } from '../stores/tabs'
-import { MAvatar, MIcon, MPopover, MSwitch, message, useTheme } from 'morya-ui'
+import { MAvatar, MBadge, MIcon, MPopover, message } from 'morya-ui'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const { state: authState, avatarText, nickname, lock, signOut } = useAuthStore()
-const { isDark, toggleTheme } = useTheme()
 
 const open = ref(false)
 const now = ref(Date.now())
@@ -82,16 +81,11 @@ async function onLogout() {
           <button type="button" class="user-panel__item" @click="open = false">
             <MIcon name="message" size="sm" />
             <span class="user-panel__label">消息中心</span>
-            <span class="user-panel__badge">5</span>
+            <MBadge :value="5" severity="danger" size="small" />
           </button>
         </div>
 
         <div class="user-panel__group">
-          <div class="user-panel__item user-panel__item--static">
-            <MIcon :name="isDark ? 'sun' : 'moon'" size="sm" />
-            <span class="user-panel__label">{{ isDark ? '浅色模式' : '深色模式' }}</span>
-            <MSwitch :model-value="isDark" aria-label="切换深浅色模式" @update:model-value="toggleTheme()" />
-          </div>
           <button type="button" class="user-panel__item" @click="onLock">
             <MIcon name="lock" size="sm" />
             <span class="user-panel__label">锁定屏幕</span>
@@ -264,14 +258,6 @@ async function onLogout() {
   color: var(--m-color-primary);
 }
 
-.user-panel__item--static {
-  cursor: default;
-}
-
-.user-panel__item--static:hover {
-  color: var(--m-color-text-muted);
-}
-
 .user-panel__item--danger:hover {
   background: color-mix(in srgb, var(--m-color-danger) 10%, transparent);
   color: var(--m-color-danger);
@@ -280,19 +266,6 @@ async function onLogout() {
 .user-panel__label {
   flex: 1;
   text-align: left;
-}
-
-.user-panel__badge {
-  min-width: 1.1rem;
-  height: 1.1rem;
-  padding: 0 var(--m-space-1);
-  border-radius: var(--m-radius-full, 999px);
-  background: var(--m-color-danger);
-  color: var(--m-color-on-emphasis);
-  font-size: var(--m-font-size-xs);
-  font-weight: 700;
-  line-height: 1.1rem;
-  text-align: center;
 }
 
 @media (max-width: 640px) {

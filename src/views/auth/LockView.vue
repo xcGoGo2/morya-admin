@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { FormInstance, FormRules } from 'morya-ui'
 import { unlockApi } from '../../api/auth'
 import { useAuthStore } from '../../stores/auth'
-import { MAvatar, MButton, MInputPassword, message } from 'morya-ui'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { MAvatar, MButton, MForm, MFormItem, MInputPassword, message } from 'morya-ui'
+import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -22,8 +23,12 @@ onBeforeUnmount(() => {
   window.clearInterval(timer)
 })
 
-const password = ref('')
+const formRef = ref<FormInstance | null>(null)
+const model = reactive({ password: '' })
 const unlocking = ref(false)
+const rules: FormRules = {
+  password: { required: true, message: '请输入密码' },
+}
 
 function formatTime(d: Date) {
   const hh = String(d.getHours()).padStart(2, '0')
@@ -38,15 +43,13 @@ function formatDate(d: Date) {
 }
 
 async function onUnlock() {
-  if (!password.value) {
-    message.warn('请输入密码')
-    return
-  }
+  const { valid } = await formRef.value!.validate()
+  if (!valid) return
   unlocking.value = true
   try {
-    await unlockApi(password.value)
+    await unlockApi(model.password)
     unlock()
-    password.value = ''
+    model.password = ''
     message.success('解锁成功，欢迎回来')
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     void router.push(redirect)
@@ -71,20 +74,28 @@ function backToLogin() {
       <div class="lock-panel__name">{{ nickname }}</div>
       <div class="lock-panel__role">{{ state.user?.role }}</div>
 
-      <form class="lock-panel__form" @submit.prevent="onUnlock">
-        <MInputPassword
-          v-model="password"
-          aria-label="解锁密码"
-          fluid
-        />
+      <MForm
+        ref="formRef"
+        class="lock-panel__form"
+        :model="model"
+        :rules="rules"
+        validate-on="submit"
+        @submit="onUnlock"
+      >
+        <MFormItem label="解锁密码" name="password">
+          <template #default="{ id, invalid }">
+            <MInputPassword :id="id" v-model="model.password" :invalid="invalid" fluid />
+          </template>
+        </MFormItem>
         <MButton
           native-type="submit"
           icon="login"
           label="解锁"
           severity="primary"
           :loading="unlocking"
+          fluid
         />
-      </form>
+      </MForm>
 
       <p class="lock-panel__tip">演示环境，输入任意密码即可解锁</p>
 
@@ -161,10 +172,15 @@ function backToLogin() {
 }
 
 .lock-panel__form {
-  display: flex;
-  gap: var(--m-space-2);
+  display: grid;
+  gap: var(--m-space-3);
   width: min(100%, 19rem);
   margin-top: var(--m-space-6);
+  text-align: left;
+}
+
+.lock-panel__form :deep(.m-form-item__label) {
+  color: var(--m-color-on-emphasis);
 }
 
 .lock-panel__tip {

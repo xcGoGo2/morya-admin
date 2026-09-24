@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       morya-ui:
-        specifier: ^0.3.1
-        version: 0.3.1(vue@3.5.43(typescript@6.0.3))
+        specifier: ^0.3.2
+        version: 0.3.2(vue@3.5.43(typescript@6.0.3))
       vue:
         specifier: ^3.5.42
         version: 3.5.43(typescript@6.0.3)
@@ -406,8 +406,8 @@ packages:
   mlly@1.8.2:
     resolution: {integrity: sha512-d+ObxMQFmbt10sretNDytwt85VrbkhhUA/JBGm1MPaWJ65Cl4wOgLaB1NYvJSZ0Ef03MMEU/0xpPMXUIQ29UfA==}
 
-  morya-ui@0.3.1:
-    resolution: {integrity: sha512-A3YU0NfL6Xe6nouLh4uIutNWVSCvrXFbpZ0EkjMEzayBHgTMu7WHs9JY/SyNw4GoW+pMZNWmNArPHqfXW66BPA==}
+  morya-ui@0.3.2:
+    resolution: {integrity: sha512-hzXQ0vBgTj831sjfSTC+ecnsngGdtE1I23HJRyVW+hyY2/pJfjbsOx29wOKq6DYAtfvMtRymAXqbtc2DcyxtOQ==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       vue: ^3.3.0
@@ -917,7 +917,7 @@ snapshots:
       pkg-types: 1.3.1
       ufo: 1.6.4
 
-  morya-ui@0.3.1(vue@3.5.43(typescript@6.0.3)):
+  morya-ui@0.3.2(vue@3.5.43(typescript@6.0.3)):
     dependencies:
       vue: 3.5.43(typescript@6.0.3)
 

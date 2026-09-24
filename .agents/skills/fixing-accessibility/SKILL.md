@@ -5,8 +5,6 @@ description: Audit and fix HTML accessibility issues including ARIA labels, keyb
 
 # fixing-accessibility
 
-> **morya-ui consumer note:** Prefer library defaults (`label`, `aria-label`, Esc-dismiss overlays). Do not replace `M*` widgets with custom ARIA hacks. When guidance conflicts with `DESIGN.md` or `morya-ui-pages`, **those win**.
-
 Fix accessibility issues.
 
 ## how to use

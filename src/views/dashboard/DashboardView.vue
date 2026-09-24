@@ -3,12 +3,12 @@ import type { TimelineEvent } from 'morya-ui'
 import { stats, todos, trafficSources, visitTrend, activities } from '../../api/mock'
 import { useAuthStore } from '../../stores/auth'
 import {
-  MButton,
   MCard,
   MCheckbox,
   MGrid,
   MGridItem,
   MPageContent,
+  MPageHeader,
   MPageStat,
   MTag,
   MTimeline,
@@ -90,25 +90,19 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
 
 <template>
   <MPageContent density="spacious" aria-label="工作台">
-    <!-- 欢迎横幅 -->
-    <section class="hero">
-      <div class="hero__text">
-        <h2 class="hero__title">{{ greeting }}，{{ nickname }}</h2>
-        <p class="hero__sub">{{ todayText }} · 欢迎使用 Morya Admin 后台管理系统</p>
-      </div>
-      <div class="hero__actions">
-        <MButton label="快速开始" icon="bolt" severity="primary" />
-        <MButton label="使用文档" icon="file-text" severity="primary" outlined />
-      </div>
-    </section>
+    <MPageHeader
+      :title="`${greeting}，${nickname}`"
+      :description="`${todayText}。关注访问、订单和待办。`"
+    />
 
-    <!-- KPI -->
     <MGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
       <MGridItem v-for="s in stats" :key="s.label">
         <MPageStat
           :label="s.label"
           :value="s.value"
-          :trend="`${s.up ? '+' : '-'}${s.trend} ${s.hint}`"
+          :trend="`${s.up ? '+' : '-'}${s.trend}`"
+          :trend-direction="s.up ? 'up' : 'down'"
+          :trend-label="s.hint"
           :trend-severity="s.up ? 'success' : 'danger'"
           :icon="s.icon"
         />
@@ -118,7 +112,7 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
     <!-- 趋势 + 流量 -->
     <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
       <MGridItem>
-        <MCard title="访问趋势" subtitle="近 7 日访问量与访客数" hoverable>
+        <MCard title="访问趋势" subtitle="近 7 日访问量与访客数" shadow="always">
           <div class="chart" role="img" aria-label="近 7 日访问趋势折线图">
             <svg :viewBox="`0 0 ${CHART_W} ${CHART_H}`" preserveAspectRatio="none">
               <polygon
@@ -166,7 +160,7 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
       </MGridItem>
 
       <MGridItem>
-        <MCard title="流量来源" subtitle="各渠道访问占比" hoverable>
+        <MCard title="流量来源" subtitle="各渠道访问占比" shadow="always">
           <div class="traffic">
             <div class="traffic__donut" :style="donutStyle" role="img" aria-label="流量来源占比图">
               <div class="traffic__donut-hole">
@@ -189,7 +183,7 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
     <!-- 待办 + 动态 -->
     <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
       <MGridItem>
-        <MCard title="待办事项" :subtitle="`共 ${todoList.filter((t) => !t.done).length} 项未完成`" hoverable>
+        <MCard title="待办事项" :subtitle="`共 ${todoList.filter((t) => !t.done).length} 项未完成`" shadow="always">
           <ul class="todo">
             <li v-for="t in todoList" :key="t.id" :class="{ 'todo--done': t.done }">
               <MCheckbox v-model="t.done" :aria-label="`完成待办：${t.title}`" />
@@ -207,7 +201,7 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
       </MGridItem>
 
       <MGridItem>
-        <MCard title="最近动态" subtitle="系统与用户操作记录" hoverable>
+        <MCard title="最近动态" subtitle="系统与用户操作记录" shadow="always">
           <MTimeline :value="timelineEvents" />
         </MCard>
       </MGridItem>
@@ -216,49 +210,6 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
 </template>
 
 <style scoped>
-/* ---------- 欢迎横幅 ---------- */
-.hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--m-space-4);
-  padding: var(--m-space-6) var(--m-space-6);
-  border-radius: var(--m-radius-lg);
-  color: var(--m-color-on-emphasis);
-  background:
-    radial-gradient(
-      46% 60% at 88% 20%,
-      color-mix(in srgb, var(--m-color-help) 50%, transparent),
-      transparent 62%
-    ),
-    linear-gradient(
-      120deg,
-      color-mix(in srgb, var(--m-color-primary) 82%, var(--m-color-contrast)),
-      var(--m-color-primary) 58%,
-      var(--m-color-help)
-    );
-  box-shadow: var(--m-shadow-md);
-}
-
-.hero__title {
-  margin: 0 0 var(--m-space-2);
-  font-size: var(--m-font-size-xl);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.hero__sub {
-  margin: 0;
-  font-size: var(--m-font-size-sm);
-  opacity: 0.78;
-}
-
-.hero__actions {
-  display: flex;
-  gap: var(--m-space-3);
-}
-
 /* ---------- 折线图 ---------- */
 .chart {
   width: 100%;
