@@ -11,7 +11,7 @@ import {
   MLayoutSider,
   MMenu,
   MScrollbar,
-  MTabs,
+  MTag,
   useTheme,
 } from 'morya-ui'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
@@ -92,14 +92,6 @@ const commands = computed<CommandMenuItem[]>(() => {
   return items
 })
 
-const tabItems = computed(() =>
-  tabs.value.map((tab) => ({
-    label: tab.label,
-    value: tab.value,
-    closable: tab.closable === true,
-  })),
-)
-
 function onSearchKey(event: KeyboardEvent) {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
     event.preventDefault()
@@ -127,10 +119,16 @@ function toggleFullscreen() {
 }
 
 function onTabChange(value: string) {
+  // 关闭按钮的点击会冒泡到标签根节点，需抑制本次导航
+  if (suppressClick === value) return
   if (value !== route.path) void router.push(value)
 }
 
+let suppressClick: string | null = null
+
 function onTabClose(value: string) {
+  suppressClick = value
+  setTimeout(() => (suppressClick = null))
   const next = close(value)
   if (next) void router.push(next)
 }
@@ -203,14 +201,21 @@ function onTabClose(value: string) {
         </div>
       </MLayoutHeader>
 
-      <div class="tabbar">
-        <MTabs
-          :model-value="active"
-          :tabs="tabItems"
-          type="card"
-          aria-label="页面页签"
-          @change="onTabChange"
-          @close="onTabClose"
+      <div class="tabbar" role="navigation" aria-label="页面页签">
+        <MTag
+          v-for="t in tabs"
+          :key="t.value"
+          :value="t.label"
+          :icon="t.icon"
+          :severity="t.value === active ? 'primary' : 'secondary'"
+          :closable="t.closable"
+          class="tabbar__tag"
+          :class="{ 'is-active': t.value === active }"
+          tabindex="0"
+          role="link"
+          @click="onTabChange(t.value)"
+          @keydown.enter="onTabChange(t.value)"
+          @close="onTabClose(t.value)"
         />
       </div>
 
@@ -278,13 +283,37 @@ function onTabClose(value: string) {
 
 .tabbar {
   flex: none;
-  padding: 0 var(--m-space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--m-space-2);
+  padding: var(--m-space-2) var(--m-space-4);
   border-bottom: 1px solid var(--m-color-border);
   background: var(--m-color-surface);
+  overflow-x: auto;
 }
 
-.tabbar :deep(.m-tabs__panel) {
-  display: none;
+.tabbar__tag {
+  flex: none;
+  min-width: 4.5rem;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform var(--m-motion-fast),
+    box-shadow var(--m-motion-fast);
+}
+
+.tabbar__tag:hover {
+  transform: translateY(-1px);
+}
+
+.tabbar__tag.is-active {
+  box-shadow: var(--m-shadow-sm);
+}
+
+.tabbar__tag:focus-visible {
+  outline: 2px solid var(--m-color-focus-ring);
+  outline-offset: 1px;
 }
 
 /* 内容区滚动：MLayoutContent 为单层壳，滚动交由 MScrollbar 承担 */
