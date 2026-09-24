@@ -15,8 +15,8 @@ const tabs = ref<AppTab[]>([{ ...HOME }])
 const active = ref(HOME.value)
 
 export function useTabsStore() {
-  function open(tab: { label: string; value: string }) {
-    if (!tabs.value.some((t) => t.value === tab.value)) {
+  function open(tab: { label: string, value: string }) {
+    if (!tabs.value.some(t => t.value === tab.value)) {
       tabs.value.push({ label: tab.label, value: tab.value, closable: tab.value !== HOME.value })
     }
     active.value = tab.value
@@ -27,8 +27,9 @@ export function useTabsStore() {
    * 至少保留一个页签：全关时回到工作台。
    */
   function close(value: string): string | null {
-    const index = tabs.value.findIndex((t) => t.value === value)
-    if (index === -1 || tabs.value[index].closable === false) return null
+    const index = tabs.value.findIndex(t => t.value === value)
+    if (index === -1 || tabs.value[index].closable === false)
+      return null
     tabs.value.splice(index, 1)
 
     if (tabs.value.length === 0) {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { FormRules } from 'morya-ui'
-import { devices } from '../../api/mock'
-import { useAuthStore } from '../../stores/auth'
+import type { DeviceItem } from '../../types'
 import {
   MButton,
   MConfirmDialog,
+  message,
   MForm,
   MFormItem,
   MIcon,
@@ -17,11 +17,11 @@ import {
   MStatus,
   MTabs,
   MTextarea,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import type { DeviceItem } from '../../types'
+import { devices } from '../../api/mock'
+import { useAuthStore } from '../../stores/auth'
 
 const route = useRoute()
 const { state } = useAuthStore()
@@ -36,7 +36,7 @@ const TABS = [
 ]
 
 const initialTab = typeof route.query.tab === 'string' ? route.query.tab : 'profile'
-const activeTab = ref(TABS.some((t) => t.value === initialTab) ? initialTab : 'profile')
+const activeTab = ref(TABS.some(t => t.value === initialTab) ? initialTab : 'profile')
 
 const profileForm = reactive({
   username: user.value?.username ?? '',
@@ -52,7 +52,8 @@ const profileRules: FormRules = {
 }
 
 function saveProfile(event: { valid: boolean }) {
-  if (!event.valid) return
+  if (!event.valid)
+    return
   message.success('个人资料已更新')
 }
 
@@ -69,14 +70,16 @@ const securityRules: FormRules = {
     required: true,
     message: '请再次输入新密码',
     validator: (value) => {
-      if (!value || value === securityForm.newPassword) return undefined
+      if (!value || value === securityForm.newPassword)
+        return undefined
       return '两次输入的新密码不一致'
     },
   },
 }
 
 function saveSecurity(event: { valid: boolean }) {
-  if (!event.valid) return
+  if (!event.valid)
+    return
   securityForm.oldPassword = ''
   securityForm.newPassword = ''
   securityForm.confirmPassword = ''
@@ -101,23 +104,27 @@ const weeklyOptions = [
 ]
 
 function saveNotify(event: { valid: boolean }) {
-  if (!event.valid) return
+  if (!event.valid)
+    return
   message.success('通知偏好已保存')
 }
 
-const deviceList = ref<DeviceItem[]>(devices.map((d) => ({ ...d })))
+const deviceList = ref<DeviceItem[]>(devices.map(d => ({ ...d })))
 const pendingDevice = ref<DeviceItem | null>(null)
 
 function deviceIcon(name: string) {
-  if (/iPhone|Android/i.test(name)) return 'device-mobile'
-  if (/Windows/i.test(name)) return 'device-desktop'
+  if (/iPhone|Android/i.test(name))
+    return 'device-mobile'
+  if (/Windows/i.test(name))
+    return 'device-desktop'
   return 'device-laptop'
 }
 
 function confirmOffline() {
   const target = pendingDevice.value
-  if (!target) return
-  deviceList.value = deviceList.value.filter((d) => d.id !== target.id)
+  if (!target)
+    return
+  deviceList.value = deviceList.value.filter(d => d.id !== target.id)
   pendingDevice.value = null
   message.success('该设备已下线')
 }

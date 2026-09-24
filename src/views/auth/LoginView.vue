@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'morya-ui'
-import { loginApi } from '../../api/auth'
-import { useAuthStore } from '../../stores/auth'
 import {
   MButton,
   MCheckbox,
+  message,
   MForm,
   MFormItem,
   MIcon,
   MInput,
   MInputPassword,
-  message,
 } from 'morya-ui'
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { loginApi } from '../../api/auth'
+import { useAuthStore } from '../../stores/auth'
 
 const route = useRoute()
 const router = useRouter()
@@ -43,7 +43,8 @@ const features = [
 async function onSubmit() {
   formError.value = ''
   const { valid } = await formRef.value!.validate()
-  if (!valid) return
+  if (!valid)
+    return
 
   submitting.value = true
   try {
@@ -52,9 +53,11 @@ async function onSubmit() {
     message.success(`欢迎回来，${user.nickname}`)
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     void router.push(redirect)
-  } catch {
+  }
+  catch {
     formError.value = '登录没有完成，请再试一次。'
-  } finally {
+  }
+  finally {
     submitting.value = false
   }
 }
@@ -73,7 +76,9 @@ async function onSubmit() {
           <span>Morya Admin</span>
         </div>
 
-        <h1 class="login-brand__title">让后台管理<br />简单而强大</h1>
+        <h1 class="login-brand__title">
+          让后台管理<br>简单而强大
+        </h1>
         <p class="login-brand__lead">
           开箱即用的中后台前端解决方案，内置权限控制、主题切换、动态菜单与丰富业务组件，助你快速搭建管理系统。
         </p>
@@ -85,7 +90,9 @@ async function onSubmit() {
           </li>
         </ul>
 
-        <p class="login-brand__foot">© 2026 Morya Admin · 高保真原型演示</p>
+        <p class="login-brand__foot">
+          © 2026 Morya Admin · 高保真原型演示
+        </p>
       </div>
     </aside>
 
@@ -103,7 +110,9 @@ async function onSubmit() {
           validate-on="submit"
           @submit="onSubmit"
         >
-          <p v-if="formError" class="login-alert" role="alert">{{ formError }}</p>
+          <p v-if="formError" class="login-alert" role="alert">
+            {{ formError }}
+          </p>
           <MFormItem label="账号" name="username">
             <template #default="{ id, invalid }">
               <MInput
@@ -173,11 +182,7 @@ async function onSubmit() {
   overflow: hidden;
   color: var(--m-color-text);
   background:
-    radial-gradient(
-      80% 60% at 10% 20%,
-      color-mix(in srgb, var(--m-color-primary) 22%, transparent),
-      transparent 55%
-    ),
+    radial-gradient(80% 60% at 10% 20%, color-mix(in srgb, var(--m-color-primary) 22%, transparent), transparent 55%),
     linear-gradient(
       165deg,
       color-mix(in srgb, var(--m-color-primary) 16%, var(--m-color-surface)) 0%,

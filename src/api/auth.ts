@@ -1,11 +1,11 @@
 import type { AuthUser } from '../types'
 
 function delay(ms: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms))
+  return new Promise<void>(resolve => setTimeout(resolve, ms))
 }
 
 /** Mock 登录：任意非空账号密码均可通过 */
-export async function loginApi(payload: { username: string; password: string }): Promise<AuthUser> {
+export async function loginApi(payload: { username: string, password: string }): Promise<AuthUser> {
   await delay(600)
   return {
     username: payload.username,

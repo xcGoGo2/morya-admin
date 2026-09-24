@@ -21,17 +21,17 @@
 
 完整定义见 MCP `get_design_rules`。运行时以已安装的 `morya-ui/styles.css` 为准。
 
-| 用途 | 变量 |
-| --- | --- |
-| 页面背景 | `--m-color-surface` |
-| 正文 | `--m-color-text` |
-| 次要文字 | `--m-color-text-muted` |
-| 边框 | `--m-color-border` |
-| 品牌 / 链接 | `--m-color-primary` |
-| 错误 | `--m-color-danger` |
-| 区块间距 | `--m-space-4` / `--m-space-6` |
-| 圆角 / 阴影 | `--m-radius-md` / `--m-shadow-md` |
-| 动效时长 | `--m-motion-fast/normal/enter/exit` |
+| 用途              | 变量                                      |
+| ----------------- | ----------------------------------------- |
+| 页面背景          | `--m-color-surface`                       |
+| 正文              | `--m-color-text`                          |
+| 次要文字          | `--m-color-text-muted`                    |
+| 边框              | `--m-color-border`                        |
+| 品牌 / 链接       | `--m-color-primary`                       |
+| 错误              | `--m-color-danger`                        |
+| 区块间距          | `--m-space-4` / `--m-space-6`             |
+| 圆角 / 阴影       | `--m-radius-md` / `--m-shadow-md`         |
+| 动效时长          | `--m-motion-fast/normal/enter/exit`       |
 | 进出场位移 / 缓动 | `--m-motion-distance` / `--m-motion-ease` |
 
 动效强度用 `useMotion`（`data-m-motion`：`full` / `reduced` / `none`），不跟随系统 `prefers-reduced-motion`；进出场预设用 `motion.transitions` / 组件 `transition`（见文档站「动效」）。

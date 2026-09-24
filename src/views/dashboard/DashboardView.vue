@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { TimelineEvent } from 'morya-ui'
-import { stats, todos, trafficSources, visitTrend, activities } from '../../api/mock'
-import { useAuthStore } from '../../stores/auth'
 import {
   MCard,
   MCheckbox,
@@ -14,16 +12,23 @@ import {
   MTimeline,
 } from 'morya-ui'
 import { computed, ref } from 'vue'
+import { activities, stats, todos, trafficSources, visitTrend } from '../../api/mock'
+import { useAuthStore } from '../../stores/auth'
 
 const { nickname } = useAuthStore()
 
 const greeting = computed(() => {
   const h = new Date().getHours()
-  if (h < 6) return '夜深了'
-  if (h < 9) return '早上好'
-  if (h < 12) return '上午好'
-  if (h < 14) return '中午好'
-  if (h < 18) return '下午好'
+  if (h < 6)
+    return '夜深了'
+  if (h < 9)
+    return '早上好'
+  if (h < 12)
+    return '上午好'
+  if (h < 14)
+    return '中午好'
+  if (h < 18)
+    return '下午好'
   return '晚上好'
 })
 
@@ -37,7 +42,7 @@ const CHART_H = 220
 const PAD = 12
 
 function buildPoints(key: 'visits' | 'visitors') {
-  const max = Math.max(...visitTrend.map((p) => p[key]))
+  const max = Math.max(...visitTrend.map(p => p[key]))
   const stepX = (CHART_W - PAD * 2) / (visitTrend.length - 1)
   return visitTrend.map((p, i) => {
     const x = PAD + i * stepX
@@ -49,8 +54,8 @@ function buildPoints(key: 'visits' | 'visitors') {
 const visitPoints = buildPoints('visits')
 const visitorPoints = buildPoints('visitors')
 
-const visitLine = visitPoints.map((p) => `${p.x},${p.y}`).join(' ')
-const visitorLine = visitorPoints.map((p) => `${p.x},${p.y}`).join(' ')
+const visitLine = visitPoints.map(p => `${p.x},${p.y}`).join(' ')
+const visitorLine = visitorPoints.map(p => `${p.x},${p.y}`).join(' ')
 const visitArea = `${PAD},${CHART_H - PAD} ${visitLine} ${CHART_W - PAD},${CHART_H - PAD}`
 
 /* ---------- 流量来源甜甜圈 ---------- */
@@ -72,15 +77,15 @@ const donutStyle = computed(() => {
 })
 
 /* ---------- 待办 ---------- */
-const todoList = ref(todos.map((t) => ({ ...t })))
-const PRIORITY_TAG: Record<string, { label: string; severity: 'danger' | 'warn' | 'success' }> = {
+const todoList = ref(todos.map(t => ({ ...t })))
+const PRIORITY_TAG: Record<string, { label: string, severity: 'danger' | 'warn' | 'success' }> = {
   high: { label: '高', severity: 'danger' },
   mid: { label: '中', severity: 'warn' },
   low: { label: '低', severity: 'success' },
 }
 
 /* ---------- 最近动态 ---------- */
-const timelineEvents: TimelineEvent[] = activities.map((a) => ({
+const timelineEvents: TimelineEvent[] = activities.map(a => ({
   content: a.content,
   date: a.time,
   icon: a.icon,
@@ -150,7 +155,7 @@ const timelineEvents: TimelineEvent[] = activities.map((a) => ({
             </svg>
           </div>
           <div class="chart-meta">
-            <span class="chart-meta__x" v-for="p in visitTrend" :key="p.date">{{ p.date }}</span>
+            <span v-for="p in visitTrend" :key="p.date" class="chart-meta__x">{{ p.date }}</span>
           </div>
           <div class="chart-legend">
             <span><i class="dot dot--primary" />访问量</span>

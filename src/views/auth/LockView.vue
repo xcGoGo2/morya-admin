@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'morya-ui'
-import { unlockApi } from '../../api/auth'
-import { useAuthStore } from '../../stores/auth'
-import { MAvatar, MButton, MForm, MFormItem, MInputPassword, message } from 'morya-ui'
+import { MAvatar, MButton, message, MForm, MFormItem, MInputPassword } from 'morya-ui'
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { unlockApi } from '../../api/auth'
+import { useAuthStore } from '../../stores/auth'
 
 const route = useRoute()
 const router = useRouter()
@@ -44,7 +44,8 @@ function formatDate(d: Date) {
 
 async function onUnlock() {
   const { valid } = await formRef.value!.validate()
-  if (!valid) return
+  if (!valid)
+    return
   unlocking.value = true
   try {
     await unlockApi(model.password)
@@ -53,7 +54,8 @@ async function onUnlock() {
     message.success('解锁成功，欢迎回来')
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     void router.push(redirect)
-  } finally {
+  }
+  finally {
     unlocking.value = false
   }
 }
@@ -67,12 +69,20 @@ function backToLogin() {
 <template>
   <div class="lock-shell">
     <div class="lock-panel">
-      <div class="lock-panel__time">{{ formatTime(now) }}</div>
-      <div class="lock-panel__date">{{ formatDate(now) }}</div>
+      <div class="lock-panel__time">
+        {{ formatTime(now) }}
+      </div>
+      <div class="lock-panel__date">
+        {{ formatDate(now) }}
+      </div>
 
       <MAvatar :label="avatarText" shape="square" size="xlarge" class="lock-panel__avatar" />
-      <div class="lock-panel__name">{{ nickname }}</div>
-      <div class="lock-panel__role">{{ state.user?.role }}</div>
+      <div class="lock-panel__name">
+        {{ nickname }}
+      </div>
+      <div class="lock-panel__role">
+        {{ state.user?.role }}
+      </div>
 
       <MForm
         ref="formRef"
@@ -97,7 +107,9 @@ function backToLogin() {
         />
       </MForm>
 
-      <p class="lock-panel__tip">演示环境，输入任意密码即可解锁</p>
+      <p class="lock-panel__tip">
+        演示环境，输入任意密码即可解锁
+      </p>
 
       <MButton label="返回登录页" link size="small" class="lock-panel__back" @click="backToLogin" />
     </div>
@@ -112,16 +124,8 @@ function backToLogin() {
   padding: var(--m-space-6);
   color: var(--m-color-on-emphasis);
   background:
-    radial-gradient(
-      50% 40% at 82% 12%,
-      color-mix(in srgb, var(--m-color-help) 45%, transparent),
-      transparent 60%
-    ),
-    radial-gradient(
-      46% 38% at 10% 88%,
-      color-mix(in srgb, var(--m-color-info) 35%, transparent),
-      transparent 58%
-    ),
+    radial-gradient(50% 40% at 82% 12%, color-mix(in srgb, var(--m-color-help) 45%, transparent), transparent 60%),
+    radial-gradient(46% 38% at 10% 88%, color-mix(in srgb, var(--m-color-info) 35%, transparent), transparent 58%),
     linear-gradient(
       150deg,
       color-mix(in srgb, var(--m-color-contrast) 92%, var(--m-color-primary)),

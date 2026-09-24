@@ -11,13 +11,15 @@ interface AuthState {
   locked: boolean
 }
 
-function readStoredUser(): { user: AuthUser; loginAt: number } | null {
+function readStoredUser(): { user: AuthUser, loginAt: number } | null {
   try {
     const raw = localStorage.getItem(AUTH_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as { user: AuthUser; loginAt: number }
+    if (!raw)
+      return null
+    const parsed = JSON.parse(raw) as { user: AuthUser, loginAt: number }
     return parsed?.user ? parsed : null
-  } catch {
+  }
+  catch {
     return null
   }
 }
@@ -33,7 +35,8 @@ const state = reactive<AuthState>({
 function persist() {
   if (state.user) {
     localStorage.setItem(AUTH_KEY, JSON.stringify({ user: state.user, loginAt: state.loginAt }))
-  } else {
+  }
+  else {
     localStorage.removeItem(AUTH_KEY)
   }
 }
@@ -60,7 +63,8 @@ export function useAuthStore() {
   }
 
   function lock() {
-    if (!state.user) return
+    if (!state.user)
+      return
     state.locked = true
     sessionStorage.setItem(LOCK_KEY, '1')
   }

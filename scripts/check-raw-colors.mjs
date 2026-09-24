@@ -28,21 +28,27 @@ function walk(dir) {
     const full = path.join(dir, name)
     const st = statSync(full)
     if (st.isDirectory()) {
-      if (IGNORE_DIRS.has(name)) continue
+      if (IGNORE_DIRS.has(name))
+        continue
       walk(full)
       continue
     }
     const ext = path.extname(name)
-    if (!EXT.has(ext)) continue
+    if (!EXT.has(ext))
+      continue
     const normalized = full.replace(/\\/g, '/')
-    if (normalized.includes('design-tokens/') || normalized.includes('/theme/')) continue
-    if (normalized.includes('.test.') || normalized.includes('/__tests__/')) continue
+    if (normalized.includes('design-tokens/') || normalized.includes('/theme/'))
+      continue
+    if (normalized.includes('.test.') || normalized.includes('/__tests__/'))
+      continue
 
     const text = readFileSync(full, 'utf8')
     const lines = text.split(/\r?\n/)
     lines.forEach((line, index) => {
-      if (ALLOW_LINE.test(line)) return
-      if (DEMO_ID.test(line)) return
+      if (ALLOW_LINE.test(line))
+        return
+      if (DEMO_ID.test(line))
+        return
       if (HEX.test(line) || RGB.test(line) || HSL.test(line)) {
         HEX.lastIndex = 0
         RGB.lastIndex = 0
@@ -56,8 +62,10 @@ function walk(dir) {
 for (const root of roots) {
   try {
     walk(path.resolve(root))
-  } catch (error) {
-    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') continue
+  }
+  catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT')
+      continue
     throw error
   }
 }

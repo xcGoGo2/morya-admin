@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAuthStore } from '../../stores/auth'
 import { MButton, MLayout, MResult } from 'morya-ui'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '../../stores/auth'
 
 const router = useRouter()
 const { state, signOut } = useAuthStore()
