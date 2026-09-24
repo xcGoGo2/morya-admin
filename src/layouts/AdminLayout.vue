@@ -11,6 +11,7 @@ import {
   MLayoutSider,
   MMenu,
   MScrollbar,
+  MSpace,
   MTag,
   useTheme,
 } from 'morya-ui'
@@ -85,7 +86,8 @@ const commands = computed<CommandMenuItem[]>(() => {
           },
         })
       }
-      if (node.items) walk(node.items)
+      if (node.items)
+        walk(node.items)
     }
   }
   walk(menuModel)
@@ -113,15 +115,18 @@ const breadcrumbModel = computed(() => {
 function toggleFullscreen() {
   if (document.fullscreenElement) {
     void document.exitFullscreen()
-  } else {
+  }
+  else {
     void document.documentElement.requestFullscreen().catch(() => {})
   }
 }
 
 function onTabChange(value: string) {
   // 关闭按钮的点击会冒泡到标签根节点，需抑制本次导航
-  if (suppressClick === value) return
-  if (value !== route.path) void router.push(value)
+  if (suppressClick === value)
+    return
+  if (value !== route.path)
+    void router.push(value)
 }
 
 let suppressClick: string | null = null
@@ -130,7 +135,8 @@ function onTabClose(value: string) {
   suppressClick = value
   setTimeout(() => (suppressClick = null))
   const next = close(value)
-  if (next) void router.push(next)
+  if (next)
+    void router.push(next)
 }
 </script>
 
@@ -171,7 +177,7 @@ function onTabClose(value: string) {
 
         <MBreadcrumb :model="breadcrumbModel" class="topbar__crumb" />
 
-        <div class="topbar__right">
+        <MSpace class="topbar__right">
           <MButton
             class="topbar__search"
             icon="search"
@@ -197,8 +203,8 @@ function onTabClose(value: string) {
           />
 
           <NotifyPopover />
-          <UserMenuPopover />
-        </div>
+          <UserMenuPopover class="ml-4" />
+        </MSpace>
       </MLayoutHeader>
 
       <div class="tabbar" role="navigation" aria-label="页面页签">
@@ -273,8 +279,6 @@ function onTabClose(value: string) {
 
 .topbar__right {
   display: flex;
-  align-items: center;
-  gap: var(--m-space-1);
 }
 
 .topbar__search {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { MAvatar, MBadge, MButton, message, MIcon, MPopover } from 'morya-ui'
+import { computed, onBeforeUnmount, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { logoutApi } from '../api/auth'
 import { useAuthStore } from '../stores/auth'
 import { useTabsStore } from '../stores/tabs'
-import { MAvatar, MBadge, MIcon, MPopover, message } from 'morya-ui'
-import { computed, onBeforeUnmount, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const { state: authState, avatarText, nickname, lock, signOut } = useAuthStore()
@@ -15,7 +15,8 @@ const timer = window.setInterval(() => (now.value = Date.now()), 30_000)
 onBeforeUnmount(() => window.clearInterval(timer))
 
 const onlineDuration = computed(() => {
-  if (!authState.loginAt) return ''
+  if (!authState.loginAt)
+    return ''
   const minutes = Math.max(1, Math.floor((now.value - authState.loginAt) / 60_000))
   const h = Math.floor(minutes / 60)
   const m = minutes % 60
@@ -45,11 +46,11 @@ async function onLogout() {
 
 <template>
   <MPopover v-model="open" placement="bottom-end" :pt="{ root: { style: 'padding:0' } }">
-    <button type="button" class="user-trigger" :class="{ open }" @click="open = !open">
-      <MAvatar :label="avatarText" shape="square" />
-      <span class="user-trigger__name">{{ nickname }}</span>
-      <MIcon name="chevron-down" size="sm" class="user-trigger__chev" />
-    </button>
+    <MButton link :underline="false" severity="secondary" class="user-trigger" :class="{ open }" @click="open = !open">
+      <MAvatar class="mr-2" :label="avatarText" shape="circle" />
+      <span class="mr-2">{{ nickname }}</span>
+      <MIcon name="chevron-down" size="sm" />
+    </MButton>
 
     <template #content>
       <div class="user-panel">
@@ -60,7 +61,9 @@ async function onLogout() {
               {{ nickname }}
               <span class="user-panel__role">{{ authState.user?.role }}</span>
             </div>
-            <div class="user-panel__mail">{{ authState.user?.email }}</div>
+            <div class="user-panel__mail">
+              {{ authState.user?.email }}
+            </div>
           </div>
         </div>
 
@@ -108,20 +111,6 @@ async function onLogout() {
   display: flex;
   align-items: center;
   gap: var(--m-space-2);
-  height: 2.5rem;
-  padding: 0 var(--m-space-2);
-  border: none;
-  border-radius: var(--m-radius-md);
-  background: transparent;
-  color: var(--m-color-text);
-  font: inherit;
-  cursor: pointer;
-  transition: background var(--m-motion-fast);
-}
-
-.user-trigger:hover,
-.user-trigger.open {
-  background: var(--m-color-fill-lighter);
 }
 
 .user-trigger__name {

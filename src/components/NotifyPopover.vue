@@ -1,32 +1,32 @@
 <script setup lang="ts">
+import type { NotifyItem, NotifyKind } from '../types'
 import { MBadge, MButton, MEmpty, MIcon, MPopover, MScrollbar, MTabs } from 'morya-ui'
 import { computed, ref } from 'vue'
 import { notifications } from '../api/mock'
-import type { NotifyItem, NotifyKind } from '../types'
 
 const open = ref(false)
 const kind = ref<NotifyKind>('notice')
-const items = ref<NotifyItem[]>(notifications.map((n) => ({ ...n })))
+const items = ref<NotifyItem[]>(notifications.map(n => ({ ...n })))
 
-const kinds: { key: NotifyKind; label: string }[] = [
+const kinds: { key: NotifyKind, label: string }[] = [
   { key: 'notice', label: '通知' },
   { key: 'message', label: '消息' },
   { key: 'todo', label: '待办' },
 ]
 
-const filtered = computed(() => items.value.filter((i) => i.kind === kind.value))
-const unreadTotal = computed(() => items.value.filter((i) => i.unread).length)
+const filtered = computed(() => items.value.filter(i => i.kind === kind.value))
+const unreadTotal = computed(() => items.value.filter(i => i.unread).length)
 const bellLabel = computed(() => (unreadTotal.value ? `通知，${unreadTotal.value} 条未读` : '通知'))
 
 const kindTabs = computed(() =>
   kinds.map((k) => {
-    const unread = items.value.filter((i) => i.kind === k.key && i.unread).length
+    const unread = items.value.filter(i => i.kind === k.key && i.unread).length
     return { label: unread ? `${k.label} ${unread}` : k.label, value: k.key }
   }),
 )
 
 function readAll() {
-  items.value.forEach((i) => (i.unread = false))
+  items.value.forEach(i => (i.unread = false))
 }
 
 function readOne(item: NotifyItem) {
@@ -41,7 +41,9 @@ function readOne(item: NotifyItem) {
         class="notify-trigger"
         icon="bell"
         icon-only
-        quaternary
+        link
+        :underline="false"
+        severity="secondary"
         :aria-label="bellLabel"
         @click="open = !open"
       />
@@ -50,8 +52,9 @@ function readOne(item: NotifyItem) {
       v-else
       class="notify-trigger"
       icon="bell"
-      icon-only
-      quaternary
+      link
+      :underline="false"
+      severity="secondary"
       :aria-label="bellLabel"
       @click="open = !open"
     />
