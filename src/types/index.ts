@@ -73,3 +73,95 @@ export interface VisitPoint {
   visits: number
   visitors: number
 }
+
+export type EnableStatus = 'active' | 'inactive'
+
+export interface UserRecord {
+  id: string
+  username: string
+  nickname: string
+  email: string
+  phone: string
+  dept: string
+  role: string
+  status: EnableStatus
+  updatedAt: string
+}
+
+export interface RoleRecord {
+  id: string
+  name: string
+  code: string
+  remark: string
+  userCount: number
+  status: EnableStatus
+  updatedAt: string
+}
+
+export type MenuType = 'directory' | 'menu' | 'button'
+
+export interface MenuRecord {
+  id: string
+  parentId: string | null
+  name: string
+  type: MenuType
+  path: string
+  icon: string
+  sort: number
+  status: EnableStatus
+}
+
+export interface DeptRecord {
+  id: string
+  parentId: string | null
+  name: string
+  leader: string
+  phone: string
+  sort: number
+  status: EnableStatus
+}
+
+export type OrderStatus = 'pending' | 'paid' | 'shipped' | 'completed' | 'cancelled'
+
+export interface OrderRecord {
+  id: string
+  orderNo: string
+  customer: string
+  product: string
+  amount: number
+  status: OrderStatus
+  createdAt: string
+}
+
+export type ProductStatus = 'on' | 'off'
+
+export interface ProductRecord {
+  id: string
+  name: string
+  sku: string
+  category: string
+  price: number
+  stock: number
+  status: ProductStatus
+  updatedAt: string
+}
+
+export interface OperationLogRecord {
+  id: string
+  module: string
+  action: string
+  operator: string
+  ip: string
+  result: 'success' | 'fail'
+  createdAt: string
+}
+
+export interface LoginLogRecord {
+  id: string
+  username: string
+  ip: string
+  location: string
+  client: string
+  result: 'success' | 'fail'
+  createdAt: string
+}
