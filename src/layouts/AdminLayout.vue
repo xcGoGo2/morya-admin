@@ -4,6 +4,7 @@ import {
   MBreadcrumb,
   MButton,
   MCommandMenu,
+  MFlex,
   MIcon,
   MLayout,
   MLayoutContent,
@@ -177,7 +178,7 @@ function onTabClose(value: string) {
 
         <MBreadcrumb :model="breadcrumbModel" class="topbar__crumb" />
 
-        <MSpace class="topbar__right">
+        <MFlex class="topbar__right gap-2" align="center">
           <MButton
             class="topbar__search"
             icon="search"
@@ -204,7 +205,7 @@ function onTabClose(value: string) {
 
           <NotifyPopover />
           <UserMenuPopover class="ml-4" />
-        </MSpace>
+        </MFlex>
       </MLayoutHeader>
 
       <div class="tabbar" role="navigation" aria-label="页面页签">
