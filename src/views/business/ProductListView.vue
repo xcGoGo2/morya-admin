@@ -230,7 +230,7 @@ function isOnShelf(statusValue: unknown) {
 </script>
 
 <template>
-  <MPageContent aria-label="商品管理">
+  <MPageContent fill aria-label="商品管理">
     <MPageHeader title="商品管理" description="维护订阅套餐、增值包与服务类商品。">
       <template #actions>
         <MButton label="新建商品" icon="plus" severity="primary" @click="openCreate" />
@@ -275,6 +275,7 @@ function isOnShelf(statusValue: unknown) {
       :columns="columns"
       :rows="filteredRows"
       :rows-per-page="8"
+      fill
       paginator
       striped
       bordered

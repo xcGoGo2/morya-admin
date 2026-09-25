@@ -81,7 +81,7 @@ function clearFilter(key: string) {
 </script>
 
 <template>
-  <MPageContent aria-label="操作日志">
+  <MPageContent fill aria-label="操作日志">
     <MPageHeader title="操作日志" description="审计后台关键写操作，便于追溯变更来源。">
       <template #actions>
         <MButton
@@ -124,6 +124,7 @@ function clearFilter(key: string) {
       :columns="columns"
       :rows="filteredRows"
       :rows-per-page="10"
+      fill
       paginator
       striped
       bordered

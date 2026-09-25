@@ -119,7 +119,7 @@ function canCancel(statusValue: unknown) {
 </script>
 
 <template>
-  <MPageContent aria-label="订单管理">
+  <MPageContent fill aria-label="订单管理">
     <MPageHeader title="订单管理" description="查看支付进度，处理发货与取消。">
       <template #actions>
         <MButton
@@ -162,6 +162,7 @@ function canCancel(statusValue: unknown) {
       :columns="columns"
       :rows="filteredRows"
       :rows-per-page="8"
+      fill
       paginator
       striped
       bordered

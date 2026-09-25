@@ -177,7 +177,7 @@ function confirmDelete() {
 </script>
 
 <template>
-  <MPageContent aria-label="部门管理">
+  <MPageContent fill aria-label="部门管理">
     <MPageHeader title="部门管理" description="维护组织架构与各部门负责人信息。">
       <template #actions>
         <MButton label="新建部门" icon="plus" severity="primary" @click="openCreate()" />
@@ -195,6 +195,7 @@ function confirmDelete() {
     <MTable
       :columns="columns"
       :rows="displayRows"
+      fill
       striped
       bordered
       row-key="id"

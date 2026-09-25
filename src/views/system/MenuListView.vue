@@ -202,7 +202,7 @@ function confirmDelete() {
 </script>
 
 <template>
-  <MPageContent aria-label="菜单管理">
+  <MPageContent fill aria-label="菜单管理">
     <MPageHeader title="菜单管理" description="维护侧栏目录、页面路由与按钮级权限节点。">
       <template #actions>
         <MButton label="新建菜单" icon="plus" severity="primary" @click="openCreate()" />
@@ -227,6 +227,7 @@ function confirmDelete() {
     <MTable
       :columns="columns"
       :rows="displayRows"
+      fill
       striped
       bordered
       row-key="id"

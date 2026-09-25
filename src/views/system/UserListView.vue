@@ -227,7 +227,7 @@ function confirmBatchDelete() {
 </script>
 
 <template>
-  <MPageContent aria-label="用户管理">
+  <MPageContent fill aria-label="用户管理">
     <MPageHeader title="用户管理" description="维护后台账号、所属部门与角色分配。">
       <template #actions>
         <MButton label="新建用户" icon="plus" severity="primary" @click="openCreate" />
@@ -290,6 +290,7 @@ function confirmBatchDelete() {
       :rows="filteredRows"
       :rows-per-page="8"
       selection-mode="multiple"
+      fill
       paginator
       striped
       bordered

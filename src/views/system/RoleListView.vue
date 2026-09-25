@@ -193,7 +193,7 @@ function confirmDelete() {
 </script>
 
 <template>
-  <MPageContent aria-label="角色管理">
+  <MPageContent fill aria-label="角色管理">
     <MPageHeader title="角色管理" description="配置角色标识与业务说明，再在用户管理中分配。">
       <template #actions>
         <MButton label="新建角色" icon="plus" severity="primary" @click="openCreate" />
@@ -231,6 +231,7 @@ function confirmDelete() {
       :columns="columns"
       :rows="filteredRows"
       :rows-per-page="8"
+      fill
       paginator
       striped
       bordered
