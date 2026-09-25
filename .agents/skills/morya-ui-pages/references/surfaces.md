@@ -58,7 +58,7 @@ Use when the brief is landing, pricing, launch, or docs marketing — **not** fo
 
 Before coding Express: short design plan in [visual-craft.md](visual-craft.md). Map colors to `--m-*` / theme overrides; do not paste a second kit.
 
-**Anti-patterns for Express:** inset hero cards instead of a full-bleed thesis; pill-stat strips in the first viewport; purple-on-white / cream-terracotta / broadsheet defaults when the brief did not ask for them.
+**Anti-patterns for Express:** inset hero cards instead of a full-bleed thesis; pill-stat strips in the first viewport; purple aurora / cream-terracotta / broadsheet / unsolicited glass-neon when the user did not ask.
 
 ## Overlay
 
@@ -77,13 +77,15 @@ Host page stays stable; focus management comes from the overlay component.
 
 | Ask | Treat as |
 | --- | --- |
-| “后台列表 + 好看一点” | Ops first, light craft (spacing/type), no landing hero |
+| “后台列表 + 好看一点” | Ops + ask once what “好看” means, or follow any reference they give |
+| “像附件截图一样” | Reference-first style resolution; still M* + `--m-*` |
 | “登录页有品牌感” | Account + Express craft on brand panel only |
 | “产品官网” | Express; Ops patterns do not apply |
 | “空状态设计精致一点” | Flow empty + visual-craft signature (one risk) |
 
 ## MCP hints
 
-- Ops whole page: `recommend_page` → `get_golden_page` → `get_design_rules`
+- Ops whole page: `recommend_page({ style? })` → `get_golden_page` → apply `styleDirection` / reference
+- Style: `get_style_direction` (no preset catalog)
 - Section: `get_page_snippet`
 - Any lane: `search` / `get_component` before unfamiliar APIs
