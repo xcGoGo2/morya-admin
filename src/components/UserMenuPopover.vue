@@ -134,37 +134,20 @@ async function onLogout() {
 }
 
 .user-panel__card {
-  position: relative;
   display: flex;
   align-items: center;
   gap: var(--m-space-3);
   padding: var(--m-space-3);
   border-radius: var(--m-radius-md);
-  overflow: hidden;
   color: var(--m-color-on-emphasis);
-  background: linear-gradient(120deg, var(--m-color-primary), var(--m-color-help));
-}
-
-.user-panel__card::after {
-  content: '';
-  position: absolute;
-  right: -1.875rem;
-  top: -2.5rem;
-  width: 7.5rem;
-  height: 7.5rem;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--m-color-on-emphasis) 14%, transparent);
-  pointer-events: none;
+  background: color-mix(in srgb, var(--m-color-primary) 92%, var(--m-color-surface));
 }
 
 .user-panel__avatar {
-  position: relative;
-  z-index: 1;
+  flex: none;
 }
 
 .user-panel__info {
-  position: relative;
-  z-index: 1;
   flex: 1;
   min-width: 0;
 }
@@ -215,7 +198,6 @@ async function onLogout() {
   height: 0.45rem;
   border-radius: 50%;
   background: var(--m-color-success);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--m-color-success) 18%, transparent);
 }
 
 .user-panel__group {

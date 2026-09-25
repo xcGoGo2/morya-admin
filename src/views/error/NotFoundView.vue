@@ -25,7 +25,7 @@ function reLogin() {
     >
       <template #footer>
         <div class="notfound__actions">
-          <MButton label="返回首页" icon="layout-dashboard" severity="primary" @click="goHome" />
+          <MButton label="返回首页" icon="layout-dashboard" @click="goHome" />
           <MButton v-if="!state.user" label="去登录" icon="login" outlined @click="reLogin" />
         </div>
       </template>

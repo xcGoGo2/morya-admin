@@ -151,7 +151,7 @@ function onTabClose(value: string) {
       show-trigger="bar"
     >
       <div class="brand">
-        <span class="brand__logo"><MIcon name="bolt" size="sm" /></span>
+        <span class="brand__logo" aria-hidden="true"><MIcon name="bolt" size="sm" /></span>
         <span v-if="!collapsed" class="brand__name">Morya Admin</span>
       </div>
 
@@ -161,6 +161,7 @@ function onTabClose(value: string) {
         :collapsed="collapsed"
         :collapsed-width="64"
         :default-expanded-keys="['system']"
+        embedded
         aria-label="主导航"
       />
     </MLayoutSider>
@@ -227,8 +228,8 @@ function onTabClose(value: string) {
 
       <MCommandMenu v-model="commandOpen" :model="commands" placeholder="搜索菜单、页面…" />
 
-      <MLayoutContent class="content-scroll">
-        <MScrollbar class="content-scroll__bar">
+      <MLayoutContent>
+        <MScrollbar class="content-scroll">
           <RouterView />
         </MScrollbar>
       </MLayoutContent>
@@ -256,13 +257,12 @@ function onTabClose(value: string) {
   height: 2rem;
   border-radius: var(--m-radius-md);
   color: var(--m-color-on-emphasis);
-  background: linear-gradient(135deg, var(--m-color-primary), var(--m-color-help));
-  box-shadow: var(--m-shadow-md);
+  background: var(--m-color-primary);
 }
 
 .brand__name {
   font-size: var(--m-font-size-md);
-  font-weight: 700;
+  font-weight: 650;
   letter-spacing: 0.02em;
 }
 
@@ -302,17 +302,6 @@ function onTabClose(value: string) {
   justify-content: center;
   cursor: pointer;
   user-select: none;
-  transition:
-    transform var(--m-motion-fast),
-    box-shadow var(--m-motion-fast);
-}
-
-.tabbar__tag:hover {
-  transform: translateY(-1px);
-}
-
-.tabbar__tag.is-active {
-  box-shadow: var(--m-shadow-sm);
 }
 
 .tabbar__tag:focus-visible {
@@ -320,12 +309,15 @@ function onTabClose(value: string) {
   outline-offset: 1px;
 }
 
-/* 内容区滚动：MLayoutContent 为单层壳，滚动交由 MScrollbar 承担 */
 .content-scroll {
+  flex: 1 1 auto;
+  height: 100%;
   min-height: 0;
 }
 
-.content-scroll__bar {
-  height: 100%;
+.content-scroll :deep(.m-scrollbar__view) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 </style>
