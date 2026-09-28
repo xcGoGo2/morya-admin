@@ -210,9 +210,11 @@ function confirmDelete() {
           clearable
           style="width: 10rem"
         />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
     </MPageFilters>
 
     <MPageFilterChips v-if="activeFilters.length" label="已选" aria-label="已选筛选">
@@ -265,7 +267,7 @@ function confirmDelete() {
       width="32rem"
       @close="resetModel"
     >
-      <MForm ref="formRef" :model="model" :rules="rules" label-position="top">
+      <MForm ref="formRef" :model="model" :rules="rules" label-position="top" validate-on="submit" @submit="onSave">
         <MFormItem label="角色名称" name="name" required>
           <template #default="{ id, invalid }">
             <MInput :id="id" v-model="model.name" placeholder="例如：运营专员" fluid :invalid="invalid" />

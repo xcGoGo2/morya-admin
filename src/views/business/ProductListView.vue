@@ -28,6 +28,7 @@ const rows = ref<ProductRecord[]>(seedProducts.map(p => ({ ...p })))
 const keyword = ref('')
 const status = ref<string | undefined>()
 const category = ref<string | undefined>()
+const filtersExpanded = ref(false)
 const applied = reactive({
   keyword: '',
   status: undefined as string | undefined,
@@ -237,7 +238,12 @@ function isOnShelf(statusValue: unknown) {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters
+      v-model:expanded="filtersExpanded"
+      aria-label="筛选"
+      variant="filled"
+      collapsible
+    >
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="搜索名称 / SKU" clearable style="width: 14rem" />
         <MSelect
@@ -247,16 +253,22 @@ function isOnShelf(statusValue: unknown) {
           clearable
           style="width: 9rem"
         />
-        <MSelect
-          v-model="category"
-          :options="productCategoryOptions"
-          placeholder="分类"
-          clearable
-          style="width: 9rem"
-        />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
+      <template #advanced>
+        <MSpace wrap>
+          <MSelect
+            v-model="category"
+            :options="productCategoryOptions"
+            placeholder="分类"
+            clearable
+            style="width: 9rem"
+          />
+        </MSpace>
+      </template>
     </MPageFilters>
 
     <MPageFilterChips v-if="activeFilters.length" label="已选" aria-label="已选筛选">
@@ -319,7 +331,7 @@ function isOnShelf(statusValue: unknown) {
       width="32rem"
       @close="resetModel"
     >
-      <MForm ref="formRef" :model="model" :rules="rules" label-position="top">
+      <MForm ref="formRef" :model="model" :rules="rules" label-position="top" validate-on="submit" @submit="onSave">
         <MFormItem label="商品名称" name="name" required>
           <template #default="{ id, invalid }">
             <MInput :id="id" v-model="model.name" fluid :invalid="invalid" />

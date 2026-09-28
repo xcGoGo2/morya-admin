@@ -187,9 +187,11 @@ function confirmDelete() {
     <MPageFilters aria-label="筛选" variant="filled">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="搜索部门 / 负责人" clearable style="width: 16rem" />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
     </MPageFilters>
 
     <MTable
@@ -232,7 +234,7 @@ function confirmDelete() {
       width="32rem"
       @close="resetModel"
     >
-      <MForm ref="formRef" :model="model" :rules="rules" label-position="top">
+      <MForm ref="formRef" :model="model" :rules="rules" label-position="top" validate-on="submit" @submit="onSave">
         <MFormItem label="上级部门" name="parentId">
           <template #default="{ id }">
             <MSelect

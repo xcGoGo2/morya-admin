@@ -103,9 +103,11 @@ function clearFilter(key: string) {
           clearable
           style="width: 10rem"
         />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
     </MPageFilters>
 
     <MPageFilterChips v-if="activeFilters.length" label="已选" aria-label="已选筛选">

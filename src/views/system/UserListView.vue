@@ -249,9 +249,11 @@ function confirmBatchDelete() {
           clearable
           style="width: 10rem"
         />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
       <template #advanced>
         <MSpace wrap>
           <MSelect
@@ -328,7 +330,7 @@ function confirmBatchDelete() {
       width="32rem"
       @close="resetModel"
     >
-      <MForm ref="formRef" :model="model" :rules="rules" label-position="top" validate-on="submit">
+      <MForm ref="formRef" :model="model" :rules="rules" label-position="top" validate-on="submit" @submit="onSave">
         <MFormItem label="用户名" name="username" required>
           <template #default="{ id, invalid }">
             <MInput :id="id" v-model="model.username" placeholder="登录账号" fluid :invalid="invalid" :disabled="!!editingId" />

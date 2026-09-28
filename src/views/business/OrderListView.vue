@@ -2,6 +2,7 @@
 import type { OrderRecord, OrderStatus } from '../../types'
 import {
   MButton,
+  MConfirmDialog,
   MDrawer,
   MEmpty,
   MInput,
@@ -25,6 +26,7 @@ const status = ref<string | undefined>()
 const applied = reactive({ keyword: '', status: undefined as string | undefined })
 const detailOpen = ref(false)
 const current = ref<OrderRecord | null>(null)
+const pendingCancel = ref<OrderRecord | null>(null)
 
 const statusMeta: Record<OrderStatus, { label: string, severity: 'warn' | 'primary' | 'info' | 'success' | 'secondary' }> = {
   pending: { label: '待支付', severity: 'warn' },
@@ -97,7 +99,7 @@ function markShipped() {
   message.success(`订单 ${current.value.orderNo} 已发货`)
 }
 
-function cancelOrderById(id: unknown) {
+function askCancelById(id: unknown) {
   const row = rows.value.find(r => r.id === String(id))
   if (!row)
     return
@@ -105,8 +107,15 @@ function cancelOrderById(id: unknown) {
     message.info('该订单不可取消')
     return
   }
-  row.status = 'cancelled'
-  message.success(`订单 ${row.orderNo} 已取消`)
+  pendingCancel.value = row
+}
+
+function confirmCancel() {
+  if (!pendingCancel.value)
+    return
+  pendingCancel.value.status = 'cancelled'
+  message.success(`订单 ${pendingCancel.value.orderNo} 已取消`)
+  pendingCancel.value = null
 }
 
 function formatAmount(value: number) {
@@ -141,9 +150,11 @@ function canCancel(statusValue: unknown) {
           clearable
           style="width: 10rem"
         />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
     </MPageFilters>
 
     <MPageFilterChips v-if="activeFilters.length" label="已选" aria-label="已选筛选">
@@ -187,7 +198,7 @@ function canCancel(statusValue: unknown) {
             severity="danger"
             size="small"
             text
-            @click="cancelOrderById(row.id)"
+            @click="askCancelById(row.id)"
           />
         </MSpace>
       </template>
@@ -225,6 +236,18 @@ function canCancel(statusValue: unknown) {
         </MSpace>
       </template>
     </MDrawer>
+
+    <MConfirmDialog
+      :model-value="pendingCancel !== null"
+      header="取消订单"
+      :message="pendingCancel ? `确定取消订单「${pendingCancel.orderNo}」？取消后不可恢复为进行中。` : ''"
+      accept-label="取消订单"
+      reject-label="返回"
+      accept-severity="danger"
+      type="warning"
+      @accept="confirmCancel"
+      @update:model-value="(open) => { if (!open) pendingCancel = null }"
+    />
   </MPageContent>
 </template>
 

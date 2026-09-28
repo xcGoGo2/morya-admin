@@ -219,9 +219,11 @@ function confirmDelete() {
           clearable
           style="width: 10rem"
         />
+      </MSpace>
+      <template #actions>
         <MButton label="查询" severity="secondary" @click="applyFilters" />
         <MButton label="重置" severity="secondary" text @click="resetFilters" />
-      </MSpace>
+      </template>
     </MPageFilters>
 
     <MTable
@@ -280,7 +282,7 @@ function confirmDelete() {
       width="32rem"
       @close="resetModel"
     >
-      <MForm ref="formRef" :model="model" :rules="rules" label-position="top">
+      <MForm ref="formRef" :model="model" :rules="rules" label-position="top" validate-on="submit" @submit="onSave">
         <MFormItem label="上级菜单" name="parentId">
           <template #default="{ id }">
             <MSelect
