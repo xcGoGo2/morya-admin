@@ -142,6 +142,14 @@ export function useAuthStore() {
     persist()
   }
 
+  /** 个人中心资料局部更新并持久化 */
+  function updateProfile(patch: Partial<Pick<AuthUser, 'nickname' | 'email' | 'bio' | 'location'>>) {
+    if (!state.user)
+      return
+    state.user = { ...state.user, ...patch }
+    persist()
+  }
+
   return {
     state,
     isAuthenticated,
@@ -155,5 +163,6 @@ export function useAuthStore() {
     hasPermission,
     canAccessPath,
     refreshPermissions,
+    updateProfile,
   }
 }
