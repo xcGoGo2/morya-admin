@@ -5,6 +5,10 @@ export interface AuthUser {
   username: string
   nickname: string
   role: string
+  /** 角色编码，用于权限解析 */
+  roleCode: string
+  /** 已展开的权限码：菜单 path + 按钮 permission */
+  permissions: string[]
   email: string
   dept: string
   location: string
@@ -96,6 +100,8 @@ export interface RoleRecord {
   userCount: number
   status: EnableStatus
   updatedAt: string
+  /** 授权的菜单 / 按钮 id */
+  menuIds: string[]
 }
 
 export type MenuType = 'directory' | 'menu' | 'button'
@@ -109,6 +115,35 @@ export interface MenuRecord {
   icon: string
   sort: number
   status: EnableStatus
+  /** 按钮权限码，如 user:create */
+  permission?: string
+}
+
+export interface DictTypeRecord {
+  id: string
+  name: string
+  code: string
+  remark: string
+  status: EnableStatus
+  updatedAt: string
+}
+
+export interface DictItemRecord {
+  id: string
+  typeCode: string
+  label: string
+  value: string
+  sort: number
+  status: EnableStatus
+}
+
+export interface ConfigRecord {
+  id: string
+  name: string
+  key: string
+  value: string
+  remark: string
+  updatedAt: string
 }
 
 export interface DeptRecord {

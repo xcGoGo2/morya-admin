@@ -5,6 +5,7 @@ import {
   MButton,
   MConfirmDialog,
   MDialog,
+  MDrawer,
   MEmpty,
   MForm,
   MFormItem,
@@ -19,21 +20,32 @@ import {
   MTable,
   MTag,
   MTextarea,
+  MTree,
   message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { roles as seedRoles } from '../../api/system'
+import { useAuthStore } from '../../stores/auth'
+import { buildPermissionTree } from '../../utils/menu'
+import { resolvePermissions } from '../../utils/permission'
 import { nextId } from '../../utils/tree'
 
-const rows = ref<RoleRecord[]>(seedRoles.map(r => ({ ...r })))
+const auth = useAuthStore()
+const rows = ref<RoleRecord[]>(seedRoles.map(r => ({ ...r, menuIds: [...r.menuIds] })))
 const keyword = ref('')
 const status = ref<string | undefined>()
 const applied = reactive({ keyword: '', status: undefined as string | undefined })
 const dialogOpen = ref(false)
+const grantOpen = ref(false)
 const submitting = ref(false)
 const editingId = ref<string | null>(null)
+const grantingRole = ref<RoleRecord | null>(null)
+const checkedKeys = ref<Record<string, boolean>>({})
 const pendingDelete = ref<RoleRecord | null>(null)
 const formRef = ref<FormInstance | null>(null)
+
+const permissionTree = buildPermissionTree()
+const grantReadonly = computed(() => grantingRole.value?.code === 'admin')
 
 const statusOptions = [
   { label: '全部', value: '' },
@@ -60,7 +72,7 @@ const columns = [
   { key: 'remark', label: '说明' },
   { key: 'status', label: '状态', width: 100 },
   { key: 'updatedAt', label: '更新时间', width: 140 },
-  { key: 'actions', label: '操作', width: 148 },
+  { key: 'actions', label: '操作', width: 220 },
 ]
 
 const filteredRows = computed(() => {
@@ -168,6 +180,7 @@ async function onSave() {
         userCount: 0,
         status: model.status,
         updatedAt: now,
+        menuIds: [],
       })
       message.success('角色已创建')
     }
@@ -187,8 +200,50 @@ function confirmDelete() {
     return
   }
   rows.value = rows.value.filter(r => r.id !== pendingDelete.value!.id)
+  const seed = seedRoles.find(r => r.id === pendingDelete.value!.id)
+  if (seed) {
+    const idx = seedRoles.indexOf(seed)
+    if (idx >= 0)
+      seedRoles.splice(idx, 1)
+  }
   message.success(`已删除角色「${pendingDelete.value.name}」`)
   pendingDelete.value = null
+}
+
+function openGrantById(id: unknown) {
+  const row = rows.value.find(r => r.id === String(id))
+  if (!row)
+    return
+  grantingRole.value = row
+  const keys: Record<string, boolean> = {}
+  for (const menuId of row.menuIds)
+    keys[menuId] = true
+  checkedKeys.value = keys
+  grantOpen.value = true
+}
+
+function saveGrant() {
+  if (!grantingRole.value || grantReadonly.value) {
+    grantOpen.value = false
+    return
+  }
+  const menuIds = Object.entries(checkedKeys.value)
+    .filter(([, on]) => on)
+    .map(([key]) => key)
+
+  grantingRole.value.menuIds = menuIds
+  grantingRole.value.updatedAt = new Date().toISOString().slice(0, 10)
+
+  const seed = seedRoles.find(r => r.id === grantingRole.value!.id)
+  if (seed)
+    seed.menuIds = [...menuIds]
+
+  if (auth.state.user?.roleCode === grantingRole.value.code) {
+    auth.refreshPermissions(resolvePermissions(menuIds))
+  }
+
+  message.success(`已更新「${grantingRole.value.name}」权限`)
+  grantOpen.value = false
 }
 </script>
 
@@ -248,6 +303,7 @@ function confirmDelete() {
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
+          <MButton label="授权" severity="secondary" size="small" text @click="openGrantById(row.id)" />
           <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
           <MButton label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
         </MSpace>
@@ -316,5 +372,43 @@ function confirmDelete() {
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"
     />
+
+    <MDrawer
+      v-model="grantOpen"
+      :header="grantingRole ? `分配权限 · ${grantingRole.name}` : '分配权限'"
+      position="right"
+      width="28rem"
+    >
+      <p v-if="grantReadonly" class="grant-tip" role="status">
+        超级管理员默认拥有全部权限，不可修改。
+      </p>
+      <MTree
+        v-model:checked-keys="checkedKeys"
+        :value="permissionTree"
+        show-checkbox
+        default-expand-all
+        :check-strictly="false"
+      />
+      <MSpace style="justify-content: flex-end; margin-top: var(--m-space-6)">
+        <MButton label="取消" severity="secondary" text @click="grantOpen = false" />
+        <MButton
+          label="保存"
+          severity="primary"
+          :disabled="grantReadonly"
+          @click="saveGrant"
+        />
+      </MSpace>
+    </MDrawer>
   </MPageContent>
 </template>
+
+<style scoped>
+.grant-tip {
+  margin: 0 0 var(--m-space-4);
+  padding: var(--m-space-3);
+  border-radius: var(--m-radius-md);
+  background: var(--m-color-fill-lighter);
+  color: var(--m-color-text-muted);
+  font-size: var(--m-font-size-sm);
+}
+</style>

@@ -81,7 +81,7 @@ async function onLogout() {
             <MIcon name="shield" size="sm" />
             <span class="user-panel__label">安全设置</span>
           </button>
-          <button type="button" class="user-panel__item" @click="open = false">
+          <button type="button" class="user-panel__item" @click="go('/notify')">
             <MIcon name="message" size="sm" />
             <span class="user-panel__label">消息中心</span>
             <MBadge :value="5" severity="danger" size="small" />

@@ -14,16 +14,34 @@ export const router = createRouter({
       meta: { public: true, title: '登录' },
     },
     {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import('../views/auth/ForgotPasswordView.vue'),
+      meta: { public: true, title: '忘记密码' },
+    },
+    {
       path: '/lock',
       name: 'lock',
       component: () => import('../views/auth/LockView.vue'),
-      meta: { title: '锁定屏幕' },
+      meta: { title: '锁定屏幕', authOnly: true },
+    },
+    {
+      path: '/403',
+      name: 'forbidden',
+      component: () => import('../views/error/ForbiddenView.vue'),
+      meta: { public: true, title: '无权访问' },
     },
     {
       path: '/404',
       name: 'not-found',
       component: () => import('../views/error/NotFoundView.vue'),
       meta: { public: true, title: '页面不存在' },
+    },
+    {
+      path: '/500',
+      name: 'server-error',
+      component: () => import('../views/error/ServerErrorView.vue'),
+      meta: { public: true, title: '服务异常' },
     },
     {
       path: '/',
@@ -61,6 +79,18 @@ export const router = createRouter({
           meta: { title: '部门管理', crumb: ['系统管理', '部门管理'] },
         },
         {
+          path: 'system/dict',
+          name: 'system-dict',
+          component: () => import('../views/system/DictListView.vue'),
+          meta: { title: '字典管理', crumb: ['系统管理', '字典管理'] },
+        },
+        {
+          path: 'system/config',
+          name: 'system-config',
+          component: () => import('../views/system/ConfigListView.vue'),
+          meta: { title: '参数配置', crumb: ['系统管理', '参数配置'] },
+        },
+        {
           path: 'business/order',
           name: 'business-order',
           component: () => import('../views/business/OrderListView.vue'),
@@ -85,10 +115,16 @@ export const router = createRouter({
           meta: { title: '登录日志', crumb: ['日志管理', '登录日志'] },
         },
         {
+          path: 'notify',
+          name: 'notify',
+          component: () => import('../views/notify/NotifyListView.vue'),
+          meta: { title: '消息中心', crumb: ['个人', '消息中心'] },
+        },
+        {
           path: 'profile',
           name: 'profile',
           component: () => import('../views/profile/ProfileView.vue'),
-          meta: { title: '个人中心', crumb: ['个人', '个人中心'] },
+          meta: { title: '个人中心', crumb: ['个人', '个人中心'], authOnly: true },
         },
       ],
     },
@@ -112,6 +148,20 @@ router.beforeEach((to) => {
   if (auth.state.locked && !to.meta.public && to.path !== '/lock') {
     return { path: '/lock', query: { redirect: to.fullPath } }
   }
+
+  // 路由级权限：已登录、非 public、非 authOnly
+  if (
+    auth.isAuthenticated.value
+    && !to.meta.public
+    && !to.meta.authOnly
+    && to.path !== '/lock'
+  ) {
+    const required = to.meta.permission ?? to.path
+    if (required && !auth.canAccessPath(required) && !auth.hasPermission(required)) {
+      return { path: '/403', query: { from: to.fullPath } }
+    }
+  }
+
   return true
 })
 

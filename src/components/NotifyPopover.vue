@@ -2,8 +2,10 @@
 import type { NotifyItem, NotifyKind } from '../types'
 import { MBadge, MButton, MEmpty, MIcon, MPopover, MScrollbar, MTabs } from 'morya-ui'
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { notifications } from '../api/mock'
 
+const router = useRouter()
 const open = ref(false)
 const kind = ref<NotifyKind>('notice')
 const items = ref<NotifyItem[]>(notifications.map(n => ({ ...n })))
@@ -31,6 +33,10 @@ function readAll() {
 
 function readOne(item: NotifyItem) {
   item.unread = false
+}
+function goAll() {
+  open.value = false
+  void router.push('/notify')
 }
 </script>
 
@@ -90,7 +96,7 @@ function readOne(item: NotifyItem) {
           </MScrollbar>
         </MTabs>
 
-        <MButton class="notify__foot" label="查看全部" text fluid @click="open = false" />
+        <MButton class="notify__foot" label="查看全部" text fluid @click="goAll" />
       </div>
     </template>
   </MPopover>

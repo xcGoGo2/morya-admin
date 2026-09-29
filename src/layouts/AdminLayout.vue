@@ -17,55 +17,25 @@ import {
 } from 'morya-ui'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import LayoutSettingsDrawer from '../components/LayoutSettingsDrawer.vue'
 import NotifyPopover from '../components/NotifyPopover.vue'
 import UserMenuPopover from '../components/UserMenuPopover.vue'
+import { useAuthStore } from '../stores/auth'
+import { useSettingsStore } from '../stores/settings'
 import { useTabsStore } from '../stores/tabs'
+import { buildMenuModel } from '../utils/menu'
 
 const route = useRoute()
 const router = useRouter()
 const { isDark, toggleTheme } = useTheme()
 const { tabs, active, close } = useTabsStore()
+const { permissions } = useAuthStore()
+const { showTabs, contentWidth } = useSettingsStore()
 
 const collapsed = ref(window.matchMedia('(max-width: 900px)').matches)
+const settingsOpen = ref(false)
 
-const menuModel: MenuItem[] = [
-  { key: '/dashboard', label: '工作台', icon: 'layout-dashboard', to: '/dashboard' },
-  {
-    key: 'system',
-    label: '系统管理',
-    icon: 'settings',
-    items: [
-      { key: '/system/user', label: '用户管理', icon: 'users', to: '/system/user' },
-      { key: '/system/role', label: '角色管理', icon: 'shield-check', to: '/system/role' },
-      { key: '/system/menu', label: '菜单管理', icon: 'list', to: '/system/menu' },
-      { key: '/system/dept', label: '部门管理', icon: 'sitemap', to: '/system/dept' },
-    ],
-  },
-  {
-    key: 'business',
-    label: '业务管理',
-    icon: 'shopping-cart',
-    items: [
-      { key: '/business/order', label: '订单管理', icon: 'file-invoice', to: '/business/order' },
-      { key: '/business/product', label: '商品管理', icon: 'box', to: '/business/product' },
-    ],
-  },
-  {
-    key: 'logs',
-    label: '日志管理',
-    icon: 'file-text',
-    items: [
-      { key: '/log/operation', label: '操作日志', icon: 'file-analytics', to: '/log/operation' },
-      { key: '/log/login', label: '登录日志', icon: 'history', to: '/log/login' },
-    ],
-  },
-  {
-    key: 'errors',
-    label: '异常页面',
-    icon: 'alert-circle',
-    items: [{ key: '/404', label: '404 页面', icon: 'ban', to: '/404' }],
-  },
-]
+const menuModel = computed<MenuItem[]>(() => buildMenuModel(permissions.value))
 
 const selectedKey = computed(() => route.path)
 const commandOpen = ref(false)
@@ -90,9 +60,16 @@ const commands = computed<CommandMenuItem[]>(() => {
         walk(node.items)
     }
   }
-  walk(menuModel)
+  walk(menuModel.value)
   return items
 })
+
+const defaultExpandedKeys = computed(() =>
+  menuModel.value
+    .filter(n => n.items?.length)
+    .map(n => n.key)
+    .filter((k): k is string => typeof k === 'string'),
+)
 
 function onSearchKey(event: KeyboardEvent) {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
@@ -122,7 +99,6 @@ function toggleFullscreen() {
 }
 
 function onTabChange(value: string) {
-  // 关闭按钮的点击会冒泡到标签根节点，需抑制本次导航
   if (suppressClick === value)
     return
   if (value !== route.path)
@@ -160,7 +136,7 @@ function onTabClose(value: string) {
         :selected-key="selectedKey"
         :collapsed="collapsed"
         :collapsed-width="64"
-        :default-expanded-keys="['system']"
+        :default-expanded-keys="defaultExpandedKeys"
         embedded
         aria-label="主导航"
       />
@@ -196,6 +172,13 @@ function onTabClose(value: string) {
             @click="toggleTheme"
           />
           <MButton
+            icon="settings"
+            icon-only
+            quaternary
+            aria-label="布局设置"
+            @click="settingsOpen = true"
+          />
+          <MButton
             icon="maximize"
             icon-only
             quaternary
@@ -208,7 +191,7 @@ function onTabClose(value: string) {
         </MFlex>
       </MLayoutHeader>
 
-      <div class="tabbar" role="navigation" aria-label="页面页签">
+      <div v-if="showTabs" class="tabbar" role="navigation" aria-label="页面页签">
         <MTag
           v-for="t in tabs"
           :key="t.value"
@@ -227,10 +210,16 @@ function onTabClose(value: string) {
       </div>
 
       <MCommandMenu v-model="commandOpen" :model="commands" placeholder="搜索菜单、页面…" />
+      <LayoutSettingsDrawer v-model="settingsOpen" />
 
       <MLayoutContent>
         <MScrollbar class="content-scroll">
-          <RouterView />
+          <div
+            class="content-inner"
+            :class="{ 'content-inner--fixed': contentWidth === 'fixed' }"
+          >
+            <RouterView />
+          </div>
         </MScrollbar>
       </MLayoutContent>
     </MLayout>
@@ -319,5 +308,18 @@ function onTabClose(value: string) {
   display: flex;
   flex-direction: column;
   min-height: 100%;
+}
+
+.content-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+}
+
+.content-inner--fixed {
+  max-width: 75rem;
+  margin-inline: auto;
 }
 </style>

@@ -37,9 +37,9 @@ const rules: FormRules = {
 }
 
 const highlights = [
-  'Mock 数据开箱即用，无需后端即可演示',
-  '路由级与按钮级权限，按需授权',
-  '亮色 / 暗黑主题一键切换',
+  '试用 admin / ops 体验不同菜单与按钮权限',
+  '侧栏由菜单种子动态生成，按角色裁剪',
+  '亮色 / 暗黑主题与布局密度可随时切换',
 ]
 
 async function onSubmit() {
@@ -51,7 +51,7 @@ async function onSubmit() {
   submitting.value = true
   try {
     const user = await loginApi({ username: model.username, password: model.password })
-    signIn(user)
+    signIn(user, { remember: model.remember })
     message.success(`欢迎回来，${user.nickname}`)
     const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     void router.push(redirect)
@@ -149,7 +149,7 @@ async function onSubmit() {
 
           <div class="login-panel__row">
             <MCheckbox v-model="model.remember" label="记住我" />
-            <MButton label="忘记密码" link size="small" />
+            <MButton label="忘记密码" link size="small" @click="router.push('/forgot-password')" />
           </div>
 
           <MButton
@@ -162,8 +162,8 @@ async function onSubmit() {
         </MForm>
 
         <p class="login-panel__tip">
-          演示账号 <b>admin</b> / <b>123456</b>
-          <span>任意内容均可登录</span>
+          试用账号 <b>admin</b>（全权限）/ <b>ops</b>（仅业务）
+          <span>密码任意非空即可</span>
         </p>
       </div>
     </main>

@@ -194,6 +194,7 @@ function canCancel(statusValue: unknown) {
           <MButton label="详情" severity="secondary" size="small" text @click="openDetailById(row.id)" />
           <MButton
             v-if="canCancel(row.status)"
+            v-auth="'order:cancel'"
             label="取消"
             severity="danger"
             size="small"
@@ -228,6 +229,7 @@ function canCancel(statusValue: unknown) {
         <MSpace style="margin-top: var(--m-space-6)">
           <MButton
             v-if="current.status === 'paid'"
+            v-auth="'order:ship'"
             label="确认发货"
             severity="primary"
             @click="markShipped"

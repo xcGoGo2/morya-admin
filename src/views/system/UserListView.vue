@@ -230,7 +230,7 @@ function confirmBatchDelete() {
   <MPageContent fill aria-label="用户管理">
     <MPageHeader title="用户管理" description="维护后台账号、所属部门与角色分配。">
       <template #actions>
-        <MButton label="新建用户" icon="plus" severity="primary" @click="openCreate" />
+        <MButton v-auth="'user:create'" label="新建用户" icon="plus" severity="primary" @click="openCreate" />
       </template>
     </MPageHeader>
 
@@ -282,7 +282,7 @@ function confirmBatchDelete() {
     <MPageToolbar v-if="selection.length">
       <MSpace>
         <span class="toolbar-hint">已选 {{ selection.length }} 项</span>
-        <MButton label="批量删除" icon="trash" severity="danger" text @click="batchDeleteOpen = true" />
+        <MButton v-auth="'user:delete'" label="批量删除" icon="trash" severity="danger" text @click="batchDeleteOpen = true" />
       </MSpace>
     </MPageToolbar>
 
@@ -308,7 +308,7 @@ function confirmBatchDelete() {
       <template #cell-actions="{ row }">
         <MSpace>
           <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
-          <MButton label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
+          <MButton v-auth="'user:delete'" label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
         </MSpace>
       </template>
       <template #empty>
@@ -318,7 +318,7 @@ function confirmBatchDelete() {
           icon="users"
         >
           <template #extra>
-            <MButton label="新建用户" severity="primary" @click="openCreate" />
+            <MButton v-auth="'user:create'" label="新建用户" severity="primary" @click="openCreate" />
           </template>
         </MEmpty>
       </template>
