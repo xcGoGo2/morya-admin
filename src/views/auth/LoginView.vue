@@ -107,7 +107,9 @@ async function onSubmit() {
 
       <div class="login-panel">
         <header class="login-panel__header">
-          <p class="login-panel__eyebrow">管理员入口</p>
+          <p class="login-panel__eyebrow">
+            管理员入口
+          </p>
           <h2>欢迎回来</h2>
           <p>使用管理员账号登录后台控制台</p>
         </header>
@@ -275,7 +277,7 @@ async function onSubmit() {
   align-items: center;
   justify-content: center;
   padding: var(--m-space-6);
-  background: var(--m-color-surface);
+  background: var(--m-color-fill-lighter);
 }
 
 .login-theme {
@@ -285,10 +287,15 @@ async function onSubmit() {
 }
 
 .login-panel {
-  width: min(100%, 22rem);
+  width: min(100%, 24rem);
   display: flex;
   flex-direction: column;
   gap: var(--m-space-4);
+  padding: var(--m-space-6);
+  border: 1px solid var(--m-color-border);
+  border-radius: var(--m-radius-md);
+  background: var(--m-color-surface);
+  box-shadow: var(--m-shadow-md);
 }
 
 .login-panel__header {
@@ -334,7 +341,7 @@ async function onSubmit() {
   padding: var(--m-space-3) var(--m-space-4);
   border: 1px solid var(--m-color-border);
   border-radius: var(--m-radius-md);
-  background: var(--m-color-surface);
+  background: var(--m-color-fill-lighter);
   color: var(--m-color-text-muted);
   font-size: var(--m-font-size-xs);
   line-height: 1.5;

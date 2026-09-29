@@ -74,8 +74,12 @@ function backToLogin() {
 <template>
   <div class="lock-shell">
     <aside class="lock-brand" aria-hidden="true">
-      <p class="lock-brand__mark">Morya Admin</p>
-      <p class="lock-brand__lead">会话已锁定。输入密码后继续工作。</p>
+      <p class="lock-brand__mark">
+        Morya Admin
+      </p>
+      <p class="lock-brand__lead">
+        会话已锁定。输入密码后继续工作。
+      </p>
     </aside>
 
     <main class="lock-main">
@@ -172,13 +176,19 @@ function backToLogin() {
   align-items: center;
   justify-content: center;
   padding: var(--m-space-6);
+  background: var(--m-color-fill-lighter);
 }
 
 .lock-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(100%, 20rem);
+  width: min(100%, 22rem);
+  padding: var(--m-space-6);
+  border: 1px solid var(--m-color-border);
+  border-radius: var(--m-radius-md);
+  background: var(--m-color-surface);
+  box-shadow: var(--m-shadow-md);
   text-align: center;
 }
 

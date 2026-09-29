@@ -2,12 +2,12 @@
 import type { FormInstance, FormRules } from 'morya-ui'
 import {
   MButton,
+  message,
   MForm,
   MFormItem,
   MIcon,
   MInput,
   MResult,
-  message,
   useTheme,
 } from 'morya-ui'
 import { reactive, ref } from 'vue'
@@ -31,7 +31,7 @@ const rules: FormRules = {
     { required: true, message: '请输入注册邮箱' },
     {
       validator: (value: unknown) => {
-        if (typeof value !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        if (typeof value !== 'string' || !/^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/.test(value))
           return '邮箱格式不正确'
         return true
       },
@@ -97,7 +97,9 @@ async function onSubmit() {
       <div class="login-panel">
         <template v-if="!sent">
           <header class="login-panel__header">
-            <p class="login-panel__eyebrow">账号安全</p>
+            <p class="login-panel__eyebrow">
+              账号安全
+            </p>
             <h2>忘记密码</h2>
             <p>填写邮箱后即可继续（演示不会真正发信）</p>
           </header>
@@ -241,7 +243,7 @@ async function onSubmit() {
   align-items: center;
   justify-content: center;
   padding: var(--m-space-6);
-  background: var(--m-color-surface);
+  background: var(--m-color-fill-lighter);
 }
 
 .login-theme {
@@ -251,10 +253,15 @@ async function onSubmit() {
 }
 
 .login-panel {
-  width: min(100%, 22rem);
+  width: min(100%, 24rem);
   display: flex;
   flex-direction: column;
   gap: var(--m-space-4);
+  padding: var(--m-space-6);
+  border: 1px solid var(--m-color-border);
+  border-radius: var(--m-radius-md);
+  background: var(--m-color-surface);
+  box-shadow: var(--m-shadow-md);
 }
 
 .login-panel__header {
