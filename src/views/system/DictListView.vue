@@ -6,6 +6,7 @@ import {
   MConfirmDialog,
   MDialog,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -18,7 +19,6 @@ import {
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { dictItems as seedItems, dictTypes as seedTypes } from '../../api/system'
@@ -301,9 +301,10 @@ function removeItem(id: unknown) {
         :columns="typeColumns"
         :rows="filteredTypes"
         :rows-per-page="8"
+        :current-row-key="selectedType?.id ?? null"
+        highlight-current
         fill
         paginator
-        striped
         bordered
         row-key="id"
         aria-label="字典类型"
@@ -456,10 +457,9 @@ function removeItem(id: unknown) {
   display: flex;
   flex-direction: column;
   gap: var(--m-space-3);
-  padding: var(--m-space-4);
-  border: 1px solid var(--m-color-border);
-  border-radius: var(--m-radius-md);
-  background: var(--m-color-surface);
+  min-height: 0;
+  padding: var(--m-space-3);
+  border-left: 1px solid var(--m-color-border);
 }
 
 .dict-split__head {
@@ -484,6 +484,13 @@ function removeItem(id: unknown) {
 @media (max-width: 960px) {
   .dict-split {
     grid-template-columns: 1fr;
+  }
+
+  .dict-split__items {
+    border-left: none;
+    border-top: 1px solid var(--m-color-border);
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>
