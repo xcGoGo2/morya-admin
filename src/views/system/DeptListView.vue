@@ -6,6 +6,7 @@ import {
   MConfirmDialog,
   MDialog,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -16,7 +17,6 @@ import {
   MSpace,
   MStatus,
   MTable,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { depts as seedDepts } from '../../api/system'
@@ -66,7 +66,7 @@ const columns = [
   { key: 'phone', label: '联系电话', width: 150 },
   { key: 'sort', label: '排序', width: 72 },
   { key: 'status', label: '状态', width: 100 },
-  { key: 'actions', label: '操作', width: 180 },
+  { key: 'actions', label: '操作', width: 220 },
 ]
 
 const displayRows = computed(() => {
@@ -74,8 +74,7 @@ const displayRows = computed(() => {
   if (!kw)
     return rows.value
   return filterTreeFlat(rows.value, row =>
-    [row.name, row.leader, row.phone].some(v => v.toLowerCase().includes(kw)),
-  )
+    [row.name, row.leader, row.phone].some(v => v.toLowerCase().includes(kw)))
 })
 
 function applyFilters() {
@@ -191,7 +190,7 @@ function confirmDelete() {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters aria-label="筛选">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="搜索部门 / 负责人" clearable style="width: 16rem" />
       </MSpace>

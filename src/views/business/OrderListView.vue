@@ -5,6 +5,7 @@ import {
   MConfirmDialog,
   MDrawer,
   MEmpty,
+  message,
   MInput,
   MPageContent,
   MPageFilterChips,
@@ -15,7 +16,6 @@ import {
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { orderStatusOptions, orders as seedOrders } from '../../api/business'
@@ -140,7 +140,7 @@ function canCancel(statusValue: unknown) {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters aria-label="筛选">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="订单号 / 客户 / 商品" clearable style="width: 16rem" />
         <MSelect
@@ -214,7 +214,11 @@ function canCancel(statusValue: unknown) {
           <div><dt>订单号</dt><dd>{{ current.orderNo }}</dd></div>
           <div><dt>客户</dt><dd>{{ current.customer }}</dd></div>
           <div><dt>商品</dt><dd>{{ current.product }}</dd></div>
-          <div><dt>金额</dt><dd class="detail__amount">{{ formatAmount(current.amount) }}</dd></div>
+          <div>
+            <dt>金额</dt><dd class="detail__amount">
+              {{ formatAmount(current.amount) }}
+            </dd>
+          </div>
           <div>
             <dt>状态</dt>
             <dd>

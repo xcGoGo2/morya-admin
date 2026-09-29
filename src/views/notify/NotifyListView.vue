@@ -3,13 +3,13 @@ import type { NotifyItem, NotifyKind } from '../../types'
 import {
   MButton,
   MEmpty,
+  message,
   MPageContent,
   MPageHeader,
   MSpace,
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, ref } from 'vue'
 import { notifications } from '../../api/mock'

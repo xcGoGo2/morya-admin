@@ -3,6 +3,7 @@ import type { LoginLogRecord } from '../../types'
 import {
   MButton,
   MEmpty,
+  message,
   MInput,
   MPageContent,
   MPageFilterChips,
@@ -13,7 +14,6 @@ import {
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { loginLogs as seedLogs } from '../../api/log'
@@ -93,7 +93,7 @@ function clearFilter(key: string) {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters aria-label="筛选">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="账号 / IP / 地点 / 客户端" clearable style="width: 18rem" />
         <MSelect

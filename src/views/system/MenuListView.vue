@@ -6,6 +6,7 @@ import {
   MConfirmDialog,
   MDialog,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -17,7 +18,6 @@ import {
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { menus as seedMenus } from '../../api/system'
@@ -83,7 +83,7 @@ const columns = [
   { key: 'icon', label: '图标', width: 140 },
   { key: 'sort', label: '排序', width: 72 },
   { key: 'status', label: '状态', width: 100 },
-  { key: 'actions', label: '操作', width: 180 },
+  { key: 'actions', label: '操作', width: 220 },
 ]
 
 const displayRows = computed(() => {
@@ -219,7 +219,7 @@ function confirmDelete() {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters aria-label="筛选">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="搜索菜单名称 / 路径" clearable style="width: 16rem" />
         <MSelect

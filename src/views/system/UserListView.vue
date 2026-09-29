@@ -6,6 +6,7 @@ import {
   MConfirmDialog,
   MDialog,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -19,7 +20,6 @@ import {
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { deptOptions, roleOptions, users as seedUsers } from '../../api/system'
@@ -237,7 +237,6 @@ function confirmBatchDelete() {
     <MPageFilters
       v-model:expanded="filtersExpanded"
       aria-label="筛选"
-      variant="filled"
       collapsible
     >
       <MSpace wrap>

@@ -6,6 +6,7 @@ import {
   MConfirmDialog,
   MDialog,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -18,7 +19,6 @@ import {
   MStatus,
   MTable,
   MTag,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { productCategoryOptions, products as seedProducts } from '../../api/business'
@@ -241,7 +241,6 @@ function isOnShelf(statusValue: unknown) {
     <MPageFilters
       v-model:expanded="filtersExpanded"
       aria-label="筛选"
-      variant="filled"
       collapsible
     >
       <MSpace wrap>

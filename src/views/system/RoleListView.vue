@@ -7,6 +7,7 @@ import {
   MDialog,
   MDrawer,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -21,7 +22,6 @@ import {
   MTag,
   MTextarea,
   MTree,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { roles as seedRoles } from '../../api/system'
@@ -255,7 +255,7 @@ function saveGrant() {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters aria-label="筛选">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="搜索角色名称 / 标识" clearable style="width: 16rem" />
         <MSelect

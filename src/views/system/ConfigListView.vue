@@ -5,6 +5,7 @@ import {
   MButton,
   MDialog,
   MEmpty,
+  message,
   MForm,
   MFormItem,
   MInput,
@@ -16,7 +17,6 @@ import {
   MTable,
   MTag,
   MTextarea,
-  message,
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { configs as seedConfigs } from '../../api/system'
@@ -157,7 +157,7 @@ async function onSave() {
       </template>
     </MPageHeader>
 
-    <MPageFilters aria-label="筛选" variant="filled">
+    <MPageFilters aria-label="筛选">
       <MSpace wrap>
         <MInput v-model="keyword" placeholder="搜索名称 / 键 / 值" clearable style="width: 16rem" />
       </MSpace>
