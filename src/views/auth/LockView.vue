@@ -135,7 +135,7 @@ function backToLogin() {
 <style scoped>
 .lock-shell {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(16rem, 0.95fr) minmax(20rem, 1.05fr);
   min-height: 100vh;
   background: var(--m-color-surface);
   color: var(--m-color-text);
@@ -147,30 +147,30 @@ function backToLogin() {
   justify-content: flex-end;
   gap: var(--m-space-4);
   padding: clamp(2rem, 6vw, 4.5rem);
-  color: var(--m-color-on-emphasis);
-  background: color-mix(in srgb, var(--m-color-primary) 92%, var(--m-color-surface));
-  border-right: 1px solid color-mix(in srgb, var(--m-color-primary) 70%, var(--m-color-border));
+  background: color-mix(in srgb, var(--m-color-primary) 12%, var(--m-color-surface));
+  border-right: 1px solid var(--m-color-border);
 }
 
 .lock-brand__mark {
   margin: 0;
   font-size: var(--m-font-size-sm);
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--m-color-on-emphasis) 72%, transparent);
+  color: var(--m-color-text-muted);
 }
 
 .lock-brand__lead {
   margin: 0;
   max-width: 18rem;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--m-color-on-emphasis) 78%, transparent);
+  color: var(--m-color-text-muted);
 }
 
 .lock-main {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--m-space-6);
 }
 
@@ -245,14 +245,14 @@ function backToLogin() {
   text-align: left;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
   .lock-shell {
     grid-template-columns: 1fr;
   }
 
   .lock-brand {
-    border-right: 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--m-color-primary) 70%, var(--m-color-border));
+    border-right: none;
+    border-bottom: 1px solid var(--m-color-border);
     min-height: 8rem;
     justify-content: center;
   }

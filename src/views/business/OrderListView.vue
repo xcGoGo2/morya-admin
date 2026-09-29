@@ -40,7 +40,7 @@ const columns = [
   { key: 'orderNo', label: '订单号', width: 160 },
   { key: 'customer', label: '客户' },
   { key: 'product', label: '商品' },
-  { key: 'amount', label: '金额', width: 110 },
+  { key: 'amount', label: '金额', width: 110, align: 'end' as const },
   { key: 'status', label: '状态', width: 110 },
   { key: 'createdAt', label: '下单时间', width: 160 },
   { key: 'actions', label: '操作', width: 160 },
@@ -214,7 +214,7 @@ function canCancel(statusValue: unknown) {
           <div><dt>订单号</dt><dd>{{ current.orderNo }}</dd></div>
           <div><dt>客户</dt><dd>{{ current.customer }}</dd></div>
           <div><dt>商品</dt><dd>{{ current.product }}</dd></div>
-          <div><dt>金额</dt><dd>{{ formatAmount(current.amount) }}</dd></div>
+          <div><dt>金额</dt><dd class="detail__amount">{{ formatAmount(current.amount) }}</dd></div>
           <div>
             <dt>状态</dt>
             <dd>
@@ -226,7 +226,10 @@ function canCancel(statusValue: unknown) {
           </div>
           <div><dt>下单时间</dt><dd>{{ current.createdAt }}</dd></div>
         </dl>
-        <MSpace style="margin-top: var(--m-space-6)">
+      </template>
+      <template v-if="current" #footer>
+        <MSpace style="justify-content: flex-end; width: 100%">
+          <MButton label="关闭" severity="secondary" text @click="detailOpen = false" />
           <MButton
             v-if="current.status === 'paid'"
             v-auth="'order:ship'"
@@ -234,7 +237,6 @@ function canCancel(statusValue: unknown) {
             severity="primary"
             @click="markShipped"
           />
-          <MButton label="关闭" severity="secondary" text @click="detailOpen = false" />
         </MSpace>
       </template>
     </MDrawer>
@@ -273,5 +275,10 @@ function canCancel(statusValue: unknown) {
 .detail dd {
   margin: 0;
   color: var(--m-color-text);
+}
+
+.detail__amount {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
 }
 </style>

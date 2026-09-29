@@ -20,7 +20,15 @@ import {
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { depts as seedDepts } from '../../api/system'
-import { flattenTree, nextId } from '../../utils/tree'
+import { filterTreeFlat, nextId } from '../../utils/tree'
+
+const treeConfig = {
+  transform: true,
+  parentField: 'parentId',
+  treeNode: 'name',
+  indent: 16,
+  expandAll: true,
+}
 
 const rows = ref<DeptRecord[]>(seedDepts.map(d => ({ ...d })))
 const keyword = ref('')
@@ -62,11 +70,10 @@ const columns = [
 ]
 
 const displayRows = computed(() => {
-  const flat = flattenTree(rows.value)
   const kw = appliedKeyword.value.trim().toLowerCase()
   if (!kw)
-    return flat
-  return flat.filter(row =>
+    return rows.value
+  return filterTreeFlat(rows.value, row =>
     [row.name, row.leader, row.phone].some(v => v.toLowerCase().includes(kw)),
   )
 })
@@ -197,15 +204,13 @@ function confirmDelete() {
     <MTable
       :columns="columns"
       :rows="displayRows"
+      :tree-config="treeConfig"
       fill
       striped
       bordered
       row-key="id"
       aria-label="部门列表"
     >
-      <template #cell-name="{ row }">
-        <span :style="{ paddingLeft: `${Number(row.depth) * 1.25}rem` }">{{ row.name }}</span>
-      </template>
       <template #cell-status="{ value }">
         <MStatus
           :label="value === 'active' ? '启用' : '停用'"

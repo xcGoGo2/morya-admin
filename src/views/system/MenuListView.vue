@@ -21,7 +21,15 @@ import {
 } from 'morya-ui'
 import { computed, reactive, ref } from 'vue'
 import { menus as seedMenus } from '../../api/system'
-import { flattenTree, nextId } from '../../utils/tree'
+import { filterTreeFlat, nextId } from '../../utils/tree'
+
+const treeConfig = {
+  transform: true,
+  parentField: 'parentId',
+  treeNode: 'name',
+  indent: 16,
+  expandAll: true,
+}
 
 const rows = ref<MenuRecord[]>(seedMenus.map(m => ({ ...m })))
 const keyword = ref('')
@@ -79,12 +87,14 @@ const columns = [
 ]
 
 const displayRows = computed(() => {
-  const flat = flattenTree(rows.value)
   const kw = applied.keyword.trim().toLowerCase()
-  return flat.filter((row) => {
+  const type = applied.type
+  if (!kw && !type)
+    return rows.value
+  return filterTreeFlat(rows.value, (row) => {
     if (kw && !row.name.toLowerCase().includes(kw) && !row.path.toLowerCase().includes(kw))
       return false
-    if (applied.type && row.type !== applied.type)
+    if (type && row.type !== type)
       return false
     return true
   })
@@ -229,17 +239,13 @@ function confirmDelete() {
     <MTable
       :columns="columns"
       :rows="displayRows"
+      :tree-config="treeConfig"
       fill
       striped
       bordered
       row-key="id"
       aria-label="菜单列表"
     >
-      <template #cell-name="{ row }">
-        <span class="tree-name" :style="{ paddingLeft: `${Number(row.depth) * 1.25}rem` }">
-          {{ row.name }}
-        </span>
-      </template>
       <template #cell-type="{ value }">
         <MTag
           :value="typeLabel[value as MenuType]"
@@ -360,9 +366,3 @@ function confirmDelete() {
     />
   </MPageContent>
 </template>
-
-<style scoped>
-.tree-name {
-  display: inline-block;
-}
-</style>
