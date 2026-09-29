@@ -240,35 +240,39 @@ const identityMeta = computed(() =>
 
     <div class="profile-layout">
       <aside class="profile-aside" aria-label="账号与分组">
-        <section class="profile-identity">
-          <MAvatar :label="avatarText" shape="square" size="xlarge" />
-          <div class="profile-identity__copy">
-            <h2>{{ nickname || '未登录' }}</h2>
-            <p v-if="identityMeta">
-              {{ identityMeta }}
-            </p>
-            <p v-if="user?.email" class="profile-identity__email">
-              {{ user.email }}
-            </p>
-          </div>
+        <section class="profile-panel-block" aria-label="当前账号">
+          <section class="profile-identity">
+            <MAvatar :label="avatarText" shape="square" size="xlarge" />
+            <div class="profile-identity__copy">
+              <h2>{{ nickname || '未登录' }}</h2>
+              <p v-if="identityMeta">
+                {{ identityMeta }}
+              </p>
+              <p v-if="user?.email" class="profile-identity__email">
+                {{ user.email }}
+              </p>
+            </div>
+          </section>
         </section>
 
-        <nav class="profile-nav" aria-label="个人中心分组">
-          <MMenu
-            v-model:selected-key="activeTab"
-            :model="navModel"
-            embedded
-            aria-label="个人中心分组"
-          />
-        </nav>
+        <section class="profile-panel-block" aria-label="个人中心分组">
+          <nav class="profile-nav" aria-label="个人中心分组">
+            <MMenu
+              v-model:selected-key="activeTab"
+              :model="navModel"
+              embedded
+              aria-label="个人中心分组"
+            />
+          </nav>
+        </section>
       </aside>
 
       <div class="profile-main">
         <MPageSection
           v-if="activeTab === 'profile'"
           class="profile-panel"
-          variant="form"
           :title="activeTitle"
+          aria-label="基本资料"
         >
           <MForm
             ref="profileFormRef"
@@ -348,8 +352,8 @@ const identityMeta = computed(() =>
         <MPageSection
           v-else-if="activeTab === 'security'"
           class="profile-panel profile-panel--narrow"
-          variant="form"
           :title="activeTitle"
+          aria-label="安全设置"
         >
           <p class="settings-hint">
             修改密码后，其他已登录设备不会自动下线；如有异常请到「登录设备」主动踢出。
@@ -402,8 +406,8 @@ const identityMeta = computed(() =>
         <MPageSection
           v-else-if="activeTab === 'notify'"
           class="profile-panel"
-          variant="form"
           :title="activeTitle"
+          aria-label="消息通知"
         >
           <MForm :model="notifyForm" label-position="top" @submit="saveNotify">
             <MGrid cols="1 m:2" :x-gap="16" :y-gap="4" responsive="screen">
@@ -455,19 +459,18 @@ const identityMeta = computed(() =>
         <MPageSection
           v-else
           class="profile-panel profile-panel--wide"
-          variant="form"
           :title="activeTitle"
+          aria-label="登录设备"
         >
-          <template #actions>
+          <div v-if="otherDevices.length" class="profile-panel__actions">
             <MButton
-              v-if="otherDevices.length"
               label="下线其他设备"
               severity="danger"
               text
               size="small"
               @click="batchOfflineOpen = true"
             />
-          </template>
+          </div>
 
           <ul v-if="deviceList.length" class="devices">
             <li v-for="d in deviceList" :key="d.id">
@@ -542,14 +545,18 @@ const identityMeta = computed(() =>
   gap: var(--m-space-4);
 }
 
+.profile-panel-block {
+  border: 1px solid var(--m-color-border);
+  border-radius: var(--m-radius-md);
+  background: var(--m-color-fill-lighter);
+  overflow: hidden;
+}
+
 .profile-identity {
   display: grid;
   justify-items: center;
   gap: var(--m-space-3);
   padding: var(--m-space-5) var(--m-space-4);
-  border: 1px solid var(--m-color-border);
-  border-radius: var(--m-radius-md);
-  background: var(--m-color-surface);
   text-align: center;
 }
 
@@ -580,10 +587,7 @@ const identityMeta = computed(() =>
 }
 
 .profile-nav {
-  border: 1px solid var(--m-color-border);
-  border-radius: var(--m-radius-md);
-  background: var(--m-color-surface);
-  overflow: hidden;
+  margin: calc(var(--m-space-2) * -1);
 }
 
 .profile-main {
@@ -592,6 +596,12 @@ const identityMeta = computed(() =>
 
 .profile-panel {
   width: 100%;
+}
+
+.profile-panel__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--m-space-2);
 }
 
 .profile-panel--narrow {
