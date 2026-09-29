@@ -8,6 +8,7 @@ import {
   MPageContent,
   MPageHeader,
   MPageStat,
+  MScrollbar,
   MTag,
   MTimeline,
 } from 'morya-ui'
@@ -94,11 +95,12 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
 </script>
 
 <template>
-  <MPageContent density="spacious" aria-label="工作台">
-    <MPageHeader
-      :title="`${greeting}，${nickname}`"
-      :description="`${todayText}。关注访问、订单和待办。`"
-    />
+  <MScrollbar class="dashboard-scroll" aria-label="工作台内容">
+    <MPageContent density="spacious" aria-label="工作台">
+      <MPageHeader
+        :title="`${greeting}，${nickname}`"
+        :description="`${todayText}。关注访问、订单和待办。`"
+      />
 
     <MGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
       <MGridItem v-for="s in stats" :key="s.label">
@@ -110,6 +112,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
           :trend-label="s.hint"
           :trend-severity="s.up ? 'success' : 'danger'"
           :icon="s.icon"
+          shadow="always"
         />
       </MGridItem>
     </MGrid>
@@ -117,7 +120,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
     <!-- 趋势 + 流量 -->
     <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
       <MGridItem>
-        <MCard title="访问趋势" subtitle="近 7 日访问量与访客数" shadow="always">
+        <MCard class="page-card" title="访问趋势" subtitle="近 7 日访问量与访客数" bordered shadow="always">
           <div class="chart" role="img" aria-label="近 7 日访问趋势折线图">
             <svg :viewBox="`0 0 ${CHART_W} ${CHART_H}`" preserveAspectRatio="none">
               <polygon
@@ -165,7 +168,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
       </MGridItem>
 
       <MGridItem>
-        <MCard title="流量来源" subtitle="各渠道访问占比" shadow="always">
+        <MCard class="page-card" title="流量来源" subtitle="各渠道访问占比" bordered shadow="always">
           <div class="traffic">
             <div class="traffic__donut" :style="donutStyle" role="img" aria-label="流量来源占比图">
               <div class="traffic__donut-hole">
@@ -188,7 +191,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
     <!-- 待办 + 动态 -->
     <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
       <MGridItem>
-        <MCard title="待办事项" :subtitle="`共 ${todoList.filter((t) => !t.done).length} 项未完成`" shadow="always">
+        <MCard class="page-card" title="待办事项" :subtitle="`共 ${todoList.filter((t) => !t.done).length} 项未完成`" bordered shadow="always">
           <ul class="todo">
             <li v-for="t in todoList" :key="t.id" :class="{ 'todo--done': t.done }">
               <MCheckbox v-model="t.done" :aria-label="`完成待办：${t.title}`" />
@@ -206,15 +209,23 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
       </MGridItem>
 
       <MGridItem>
-        <MCard title="最近动态" subtitle="系统与用户操作记录" shadow="always">
+        <MCard class="page-card" title="最近动态" subtitle="系统与用户操作记录" bordered shadow="always">
           <MTimeline :value="timelineEvents" />
         </MCard>
       </MGridItem>
     </MGrid>
   </MPageContent>
+  </MScrollbar>
 </template>
 
 <style scoped>
+.dashboard-scroll {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+}
+
 /* ---------- 折线图 ---------- */
 .chart {
   width: 100%;
