@@ -16,3 +16,27 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/*
+ * 全站卡片式：
+ * - AdminLayout：浅底画布 + 主内容一整张 MCard（content-shell）
+ * - 列表：MPageContent fill → 头/筛选固定，MTable fill 表体滚动
+ * - 无表格页：content-inner 在卡片内滚动
+ */
+.page-card.m-card {
+  background: var(--m-color-surface);
+}
+
+.page-card--fill.m-card {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-card--fill.m-card > .m-card__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}

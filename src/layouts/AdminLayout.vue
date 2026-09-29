@@ -3,6 +3,7 @@ import type { CommandMenuItem, MenuItem } from 'morya-ui'
 import {
   MBreadcrumb,
   MButton,
+  MCard,
   MCommandMenu,
   MFlex,
   MIcon,
@@ -11,7 +12,6 @@ import {
   MLayoutHeader,
   MLayoutSider,
   MMenu,
-  MScrollbar,
   MTag,
   useTheme,
 } from 'morya-ui'
@@ -98,14 +98,14 @@ function toggleFullscreen() {
   }
 }
 
+let suppressClick: string | null = null
+
 function onTabChange(value: string) {
   if (suppressClick === value)
     return
   if (value !== route.path)
     void router.push(value)
 }
-
-let suppressClick: string | null = null
 
 function onTabClose(value: string) {
   suppressClick = value
@@ -212,15 +212,22 @@ function onTabClose(value: string) {
       <MCommandMenu v-model="commandOpen" :model="commands" placeholder="搜索菜单、页面…" />
       <LayoutSettingsDrawer v-model="settingsOpen" />
 
-      <MLayoutContent>
-        <MScrollbar class="content-scroll">
-          <div
-            class="content-inner"
-            :class="{ 'content-inner--fixed': contentWidth === 'fixed' }"
+      <MLayoutContent class="layout-content">
+        <div class="admin-canvas">
+          <MCard
+            class="content-shell page-card page-card--fill"
+            bordered
+            shadow="always"
+            aria-label="主内容"
           >
-            <RouterView />
-          </div>
-        </MScrollbar>
+            <div
+              class="content-inner"
+              :class="{ 'content-inner--fixed': contentWidth === 'fixed' }"
+            >
+              <RouterView />
+            </div>
+          </MCard>
+        </div>
       </MLayoutContent>
     </MLayout>
   </MLayout>
@@ -298,28 +305,68 @@ function onTabClose(value: string) {
   outline-offset: 1px;
 }
 
-.content-scroll {
-  flex: 1 1 auto;
-  height: 100%;
+.layout-content {
+  display: flex;
+  flex-direction: column;
   min-height: 0;
 }
 
-.content-scroll :deep(.m-scrollbar__view) {
+.admin-canvas {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 0;
+  height: 100%;
+  padding: var(--m-space-4);
+  background: var(--m-color-fill-lighter);
+}
+
+.content-shell.page-card {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-shell.page-card > :deep(.m-card__body) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* 仅主壳去 padding；工作台等内部 MCard 保留组件默认内边距 */
+  padding: 0;
+  overflow: hidden;
 }
 
 .content-inner {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 0;
   width: 100%;
+  /* 无表格 fill / 自带 MScrollbar 的页：卡片内不原生滚动 */
+  overflow: auto;
+}
+
+.content-inner:has(.m-page-content--fill),
+.content-inner:has(.m-scrollbar) {
+  overflow: hidden;
 }
 
 .content-inner--fixed {
   max-width: 75rem;
   margin-inline: auto;
+}
+
+.content-inner :deep(.m-page-content--fill) {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
+/* 字典等非直接 MTable 主区，同样吃掉剩余高度 */
+.content-inner :deep(.m-page-content--fill > .dict-split) {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 </style>
