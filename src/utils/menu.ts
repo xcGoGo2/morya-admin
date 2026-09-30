@@ -53,6 +53,21 @@ export function buildMenuModel(
   return childrenOf(null)
 }
 
+/** 按路由 path 查菜单叶子图标（供顶部页签复用） */
+export function findMenuIcon(permissions: string[], path: string): IconName | undefined {
+  function walk(nodes: MenuItem[]): IconName | undefined {
+    for (const node of nodes) {
+      if (node.to === path && node.icon)
+        return node.icon as IconName
+      const found = node.items ? walk(node.items) : undefined
+      if (found)
+        return found
+    }
+    return undefined
+  }
+  return walk(buildMenuModel(permissions))
+}
+
 export interface PermissionTreeNode {
   key: string
   label: string

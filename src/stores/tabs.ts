@@ -15,9 +15,9 @@ const tabs = ref<AppTab[]>([{ ...HOME }])
 const active = ref(HOME.value)
 
 export function useTabsStore() {
-  function open(tab: { label: string, value: string }) {
+  function open(tab: { label: string, value: string, icon?: IconName }) {
     if (!tabs.value.some(t => t.value === tab.value)) {
-      tabs.value.push({ label: tab.label, value: tab.value, closable: tab.value !== HOME.value })
+      tabs.value.push({ label: tab.label, value: tab.value, icon: tab.icon, closable: tab.value !== HOME.value })
     }
     active.value = tab.value
   }

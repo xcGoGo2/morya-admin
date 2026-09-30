@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useTabsStore } from '../stores/tabs'
+import { findMenuIcon } from '../utils/menu'
 
 const AdminLayout = () => import('../layouts/AdminLayout.vue')
 
@@ -171,6 +172,10 @@ router.afterEach((to) => {
 
   // 仅后台壳内页面参与页签
   if (to.meta.crumb && title) {
-    useTabsStore().open({ label: title, value: to.path })
+    useTabsStore().open({
+      label: title,
+      value: to.path,
+      icon: findMenuIcon(useAuthStore().permissions.value, to.path),
+    })
   }
 })

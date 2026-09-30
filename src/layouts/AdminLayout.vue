@@ -188,7 +188,14 @@ function onTabClose(value: string) {
         </MFlex>
       </MLayoutHeader>
 
-      <div v-if="showTabs" class="tabbar" role="navigation" aria-label="页面页签">
+      <TransitionGroup
+        v-if="showTabs"
+        tag="div"
+        name="tab"
+        class="tabbar"
+        role="navigation"
+        aria-label="页面页签"
+      >
         <MTag
           v-for="t in tabs"
           :key="t.value"
@@ -196,7 +203,9 @@ function onTabClose(value: string) {
           :icon="t.icon"
           :severity="t.value === active ? 'primary' : 'secondary'"
           :closable="t.closable"
+          :bordered="t.value === active"
           class="tabbar__tag"
+          :class="{ 'tabbar__tag--active': t.value === active }"
           tabindex="0"
           size="large"
           role="link"
@@ -204,7 +213,7 @@ function onTabClose(value: string) {
           @keydown.enter="onTabChange(t.value)"
           @close="onTabClose(t.value)"
         />
-      </div>
+      </TransitionGroup>
 
       <MCommandMenu v-model="commandOpen" :model="commands" placeholder="搜索菜单、页面…" />
       <LayoutSettingsDrawer v-model="settingsOpen" />
@@ -285,7 +294,7 @@ function onTabClose(value: string) {
   gap: var(--m-space-2);
   padding: var(--m-space-2) var(--m-space-4);
   border-bottom: 1px solid var(--m-color-border);
-  background: var(--m-color-surface);
+  background: var(--m-color-fill-lighter);
   overflow-x: auto;
 }
 
@@ -295,11 +304,41 @@ function onTabClose(value: string) {
   justify-content: center;
   cursor: pointer;
   user-select: none;
+  transition:
+    transform var(--m-motion-fast) var(--m-motion-ease),
+    box-shadow var(--m-motion-fast) var(--m-motion-ease);
+}
+
+.tabbar__tag:hover {
+  transform: translateY(-1px);
+}
+
+.tabbar__tag:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .tabbar__tag:focus-visible {
   outline: 2px solid var(--m-color-focus-ring);
   outline-offset: 1px;
+}
+
+.tabbar__tag--active {
+  box-shadow: var(--m-shadow-sm);
+}
+
+/* 页签进出场 / 重排（TransitionGroup）——声明在 .tabbar__tag 之后，过渡期覆盖其 fast 过渡 */
+.tab-move,
+.tab-enter-active,
+.tab-leave-active {
+  transition:
+    transform var(--m-motion-normal) var(--m-motion-ease),
+    opacity var(--m-motion-normal) var(--m-motion-ease);
+}
+
+.tab-enter-from,
+.tab-leave-to {
+  opacity: 0;
+  transform: translateY(calc(var(--m-space-2) * 0.75)) scale(0.92);
 }
 
 .layout-content {
