@@ -6,7 +6,7 @@ import {
   message,
   MPageContent,
   MPageHeader,
-  MSpace,
+  MSelectButton,
   MStatus,
   MTable,
   MTag,
@@ -15,13 +15,24 @@ import { computed, ref } from 'vue'
 import { notifications } from '../../api/mock'
 
 const kind = ref<NotifyKind | 'all'>('all')
+const kindModel = computed<string>({
+  get: () => kind.value,
+  set: v => (kind.value = v as NotifyKind | 'all'),
+})
 const items = ref<NotifyItem[]>(notifications.map(n => ({ ...n })))
 
-const kindMeta: Record<NotifyKind, { label: string, severity: 'primary' | 'info' | 'warn' }> = {
+const kindMeta: Record<NotifyKind, { label: string, severity: 'primary' | 'info' | 'warning' }> = {
   notice: { label: '通知', severity: 'primary' },
   message: { label: '消息', severity: 'info' },
-  todo: { label: '待办', severity: 'warn' },
+  todo: { label: '待办', severity: 'warning' },
 }
+
+const kindOptions = [
+  { label: '全部', value: 'all' },
+  { label: '通知', value: 'notice' },
+  { label: '消息', value: 'message' },
+  { label: '待办', value: 'todo' },
+]
 
 const columns = [
   { key: 'kind', label: '类型', width: 100 },
@@ -37,10 +48,6 @@ const filtered = computed(() =>
 )
 
 const unreadTotal = computed(() => items.value.filter(i => i.unread).length)
-
-function setKind(next: NotifyKind | 'all') {
-  kind.value = next
-}
 
 function readAll() {
   items.value.forEach(i => (i.unread = false))
@@ -70,32 +77,12 @@ function readOne(id: unknown) {
       </template>
     </MPageHeader>
 
-    <MSpace wrap class="notify-filters">
-      <MTag
-        value="全部"
-        :severity="kind === 'all' ? 'primary' : 'secondary'"
-        class="notify-filters__chip"
-        @click="setKind('all')"
-      />
-      <MTag
-        value="通知"
-        :severity="kind === 'notice' ? 'primary' : 'secondary'"
-        class="notify-filters__chip"
-        @click="setKind('notice')"
-      />
-      <MTag
-        value="消息"
-        :severity="kind === 'message' ? 'primary' : 'secondary'"
-        class="notify-filters__chip"
-        @click="setKind('message')"
-      />
-      <MTag
-        value="待办"
-        :severity="kind === 'todo' ? 'primary' : 'secondary'"
-        class="notify-filters__chip"
-        @click="setKind('todo')"
-      />
-    </MSpace>
+    <MSelectButton
+      v-model="kindModel"
+      class="notify-filters"
+      :options="kindOptions"
+      aria-label="消息分类"
+    />
 
     <MTable
       :columns="columns"
@@ -118,7 +105,7 @@ function readOne(id: unknown) {
       <template #cell-unread="{ value }">
         <MStatus
           :label="value ? '未读' : '已读'"
-          :severity="value ? 'warn' : 'secondary'"
+          :severity="value ? 'warning' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
@@ -141,10 +128,5 @@ function readOne(id: unknown) {
 <style scoped>
 .notify-filters {
   margin-bottom: var(--m-space-2);
-}
-
-.notify-filters__chip {
-  cursor: pointer;
-  user-select: none;
 }
 </style>

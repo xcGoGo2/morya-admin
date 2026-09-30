@@ -98,18 +98,15 @@ function toggleFullscreen() {
   }
 }
 
-let suppressClick: string | null = null
-
 function onTabChange(value: string) {
-  if (suppressClick === value)
+  // 点击关闭按钮时 click 会冒泡到标签根元素，此时页签已被移除，跳过导航
+  if (!tabs.value.some(t => t.value === value))
     return
   if (value !== route.path)
     void router.push(value)
 }
 
 function onTabClose(value: string) {
-  suppressClick = value
-  setTimeout(() => (suppressClick = null))
   const next = close(value)
   if (next)
     void router.push(next)
@@ -200,8 +197,8 @@ function onTabClose(value: string) {
           :severity="t.value === active ? 'primary' : 'secondary'"
           :closable="t.closable"
           class="tabbar__tag"
-          :class="{ 'is-active': t.value === active }"
           tabindex="0"
+          size="large"
           role="link"
           @click="onTabChange(t.value)"
           @keydown.enter="onTabChange(t.value)"

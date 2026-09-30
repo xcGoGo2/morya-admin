@@ -1,6 +1,6 @@
 import type { AuthUser } from '../types'
-import { users } from './system'
 import { findRoleByCode, permissionsForRoleCode } from '../utils/permission'
+import { users } from './system'
 
 function delay(ms: number) {
   return new Promise<void>(resolve => setTimeout(resolve, ms))

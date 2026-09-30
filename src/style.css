@@ -18,6 +18,16 @@ body {
 }
 
 /*
+ * 主题令牌覆盖：
+ * 卡片常态阴影统一用 --m-shadow-sm（组件库默认 --m-shadow-raised，偏重）。
+ * 库在 .m-card 上声明 --m-card-shadow-rest，这里用同名选择器、
+ * 依赖后导入的级联顺序覆盖；暗色模式跟随 --m-shadow-sm 自动切换。
+ */
+.m-card {
+  --m-card-shadow-rest: var(--m-shadow-sm);
+}
+
+/*
  * 全站卡片式：
  * - AdminLayout：浅底画布 + 主内容一整张 MCard（content-shell）
  * - 列表：MPageContent fill → 头/筛选固定，MTable fill 表体滚动

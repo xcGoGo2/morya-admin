@@ -27,7 +27,7 @@ export const notifications: NotifyItem[] = [
     desc: '检测到你的账号在新设备上登录，如非本人操作请立即修改密码。',
     time: '1 小时前',
     icon: 'alert-circle',
-    tone: 'warn',
+    tone: 'warning',
     unread: true,
   },
   {
@@ -77,7 +77,7 @@ export const notifications: NotifyItem[] = [
     desc: '共 12 条待审核，请尽快处理。',
     time: '今天 14:00 前',
     icon: 'clock',
-    tone: 'warn',
+    tone: 'warning',
     unread: false,
   },
   {
@@ -94,10 +94,10 @@ export const notifications: NotifyItem[] = [
 
 /** 工作台 KPI */
 export const stats: StatItem[] = [
-  { label: '总用户数', value: '12,846', trend: '12.5%', hint: '较上周', up: true, icon: 'users', severity: 'primary' },
-  { label: '今日订单', value: '1,024', trend: '8.2%', hint: '较昨日', up: true, icon: 'shopping-cart', severity: 'success' },
-  { label: '本月销售额', value: '¥ 386,920', trend: '23.1%', hint: '较上月', up: true, icon: 'currency-yuan', severity: 'primary' },
-  { label: '转化率', value: '3.86%', trend: '1.4%', hint: '较上周', up: false, icon: 'trending-up', severity: 'danger' },
+  { label: '总用户数', value: '12,846', trend: '12.5%', hint: '较上周', up: true, icon: 'users' },
+  { label: '今日订单', value: '1,024', trend: '8.2%', hint: '较昨日', up: true, icon: 'shopping-cart' },
+  { label: '本月销售额', value: '¥ 386,920', trend: '23.1%', hint: '较上月', up: true, icon: 'currency-yuan' },
+  { label: '转化率', value: '3.86%', trend: '1.4%', hint: '较上周', up: false, icon: 'trending-up' },
 ]
 
 /** 访问趋势（近 7 日） */
@@ -116,7 +116,7 @@ export const trafficSources: TrafficSource[] = [
   { name: '直接访问', percent: 42, color: 'primary' },
   { name: '搜索引擎', percent: 26, color: 'help' },
   { name: '社交媒体', percent: 18, color: 'info' },
-  { name: '其他渠道', percent: 14, color: 'warn' },
+  { name: '其他渠道', percent: 14, color: 'warning' },
 ]
 
 /** 待办事项 */
@@ -132,7 +132,7 @@ export const activities: ActivityItem[] = [
   { id: 1, content: '张三 创建了新用户「lisi」', time: '10 分钟前', icon: 'user-plus', severity: 'info' },
   { id: 2, content: '系统完成每日数据备份', time: '1 小时前', icon: 'database', severity: 'success' },
   { id: 3, content: '李四 修改了角色「运营专员」的权限', time: '3 小时前', icon: 'shield-check', severity: 'info' },
-  { id: 4, content: '王五 登录了系统', time: '昨天 18:20', icon: 'login', severity: 'warn' },
+  { id: 4, content: '王五 登录了系统', time: '昨天 18:20', icon: 'login', severity: 'warning' },
 ]
 
 /** 登录设备 */

@@ -196,9 +196,9 @@ function goAll() {
   color: var(--m-color-success);
 }
 
-.notify__ico[data-tone='warn'] {
-  background: color-mix(in srgb, var(--m-color-warn) 13%, transparent);
-  color: var(--m-color-warn);
+.notify__ico[data-tone='warning'] {
+  background: color-mix(in srgb, var(--m-color-warning) 13%, transparent);
+  color: var(--m-color-warning);
 }
 
 .notify__ico[data-tone='help'] {

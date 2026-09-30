@@ -64,7 +64,7 @@ const TONE_COLOR: Record<string, string> = {
   primary: 'var(--m-color-primary)',
   help: 'var(--m-color-help)',
   info: 'var(--m-color-info)',
-  warn: 'var(--m-color-warn)',
+  warning: 'var(--m-color-warning)',
 }
 
 const donutStyle = computed(() => {
@@ -79,9 +79,9 @@ const donutStyle = computed(() => {
 
 /* ---------- 待办 ---------- */
 const todoList = ref(todos.map(t => ({ ...t })))
-const PRIORITY_TAG: Record<string, { label: string, severity: 'danger' | 'warn' | 'success' }> = {
+const PRIORITY_TAG: Record<string, { label: string, severity: 'danger' | 'warning' | 'success' }> = {
   high: { label: '高', severity: 'danger' },
-  mid: { label: '中', severity: 'warn' },
+  mid: { label: '中', severity: 'warning' },
   low: { label: '低', severity: 'success' },
 }
 
@@ -102,119 +102,119 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
         :description="`${todayText}。关注访问、订单和待办。`"
       />
 
-    <MGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
-      <MGridItem v-for="s in stats" :key="s.label">
-        <MPageStat
-          :label="s.label"
-          :value="s.value"
-          :trend="`${s.up ? '+' : '-'}${s.trend}`"
-          :trend-direction="s.up ? 'up' : 'down'"
-          :trend-label="s.hint"
-          :trend-severity="s.up ? 'success' : 'danger'"
-          :icon="s.icon"
-          shadow="always"
-        />
-      </MGridItem>
-    </MGrid>
+      <MGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
+        <MGridItem v-for="s in stats" :key="s.label">
+          <MPageStat
+            :label="s.label"
+            :value="s.value"
+            :trend="`${s.up ? '+' : '-'}${s.trend}`"
+            :trend-direction="s.up ? 'up' : 'down'"
+            :trend-label="s.hint"
+            :trend-severity="s.up ? 'success' : 'danger'"
+            :icon="s.icon"
+            shadow="always"
+          />
+        </MGridItem>
+      </MGrid>
 
-    <!-- 趋势 + 流量 -->
-    <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
-      <MGridItem>
-        <MCard class="page-card" title="访问趋势" subtitle="近 7 日访问量与访客数" bordered shadow="always">
-          <div class="chart" role="img" aria-label="近 7 日访问趋势折线图">
-            <svg :viewBox="`0 0 ${CHART_W} ${CHART_H}`" preserveAspectRatio="none">
-              <polygon
-                :points="visitArea"
-                fill="var(--m-color-primary)"
-                fill-opacity="0.08"
-              />
-              <polyline
-                :points="visitLine"
-                fill="none"
-                stroke="var(--m-color-primary)"
-                stroke-width="2.5"
-                stroke-linejoin="round"
-                stroke-linecap="round"
-              />
-              <polyline
-                :points="visitorLine"
-                fill="none"
-                stroke="var(--m-color-success)"
-                stroke-width="2.5"
-                stroke-dasharray="5 5"
-                stroke-linejoin="round"
-                stroke-linecap="round"
-              />
-              <circle
-                v-for="p in visitPoints"
-                :key="`v-${p.date}`"
-                :cx="p.x"
-                :cy="p.y"
-                r="3.5"
-                fill="var(--m-color-surface)"
-                stroke="var(--m-color-primary)"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-          <div class="chart-meta">
-            <span v-for="p in visitTrend" :key="p.date" class="chart-meta__x">{{ p.date }}</span>
-          </div>
-          <div class="chart-legend">
-            <span><i class="dot dot--primary" />访问量</span>
-            <span><i class="dot dot--success" />访客数</span>
-          </div>
-        </MCard>
-      </MGridItem>
-
-      <MGridItem>
-        <MCard class="page-card" title="流量来源" subtitle="各渠道访问占比" bordered shadow="always">
-          <div class="traffic">
-            <div class="traffic__donut" :style="donutStyle" role="img" aria-label="流量来源占比图">
-              <div class="traffic__donut-hole">
-                <b>100%</b>
-                <span>总访问</span>
-              </div>
+      <!-- 趋势 + 流量 -->
+      <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
+        <MGridItem>
+          <MCard class="page-card" title="访问趋势" subtitle="近 7 日访问量与访客数" bordered shadow="always">
+            <div class="chart" role="img" aria-label="近 7 日访问趋势折线图">
+              <svg :viewBox="`0 0 ${CHART_W} ${CHART_H}`" preserveAspectRatio="none">
+                <polygon
+                  :points="visitArea"
+                  fill="var(--m-color-primary)"
+                  fill-opacity="0.08"
+                />
+                <polyline
+                  :points="visitLine"
+                  fill="none"
+                  stroke="var(--m-color-primary)"
+                  stroke-width="2.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+                <polyline
+                  :points="visitorLine"
+                  fill="none"
+                  stroke="var(--m-color-success)"
+                  stroke-width="2.5"
+                  stroke-dasharray="5 5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+                <circle
+                  v-for="p in visitPoints"
+                  :key="`v-${p.date}`"
+                  :cx="p.x"
+                  :cy="p.y"
+                  r="3.5"
+                  fill="var(--m-color-surface)"
+                  stroke="var(--m-color-primary)"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
-            <ul class="traffic__legend">
-              <li v-for="s in trafficSources" :key="s.name">
-                <i class="dot" :style="{ background: TONE_COLOR[s.color] }" />
-                <span class="traffic__name">{{ s.name }}</span>
-                <b>{{ s.percent }}%</b>
+            <div class="chart-meta">
+              <span v-for="p in visitTrend" :key="p.date" class="chart-meta__x">{{ p.date }}</span>
+            </div>
+            <div class="chart-legend">
+              <span><i class="dot dot--primary" />访问量</span>
+              <span><i class="dot dot--success" />访客数</span>
+            </div>
+          </MCard>
+        </MGridItem>
+
+        <MGridItem>
+          <MCard class="page-card" title="流量来源" subtitle="各渠道访问占比" bordered shadow="always">
+            <div class="traffic">
+              <div class="traffic__donut" :style="donutStyle" role="img" aria-label="流量来源占比图">
+                <div class="traffic__donut-hole">
+                  <b>100%</b>
+                  <span>总访问</span>
+                </div>
+              </div>
+              <ul class="traffic__legend">
+                <li v-for="s in trafficSources" :key="s.name">
+                  <i class="dot" :style="{ background: TONE_COLOR[s.color] }" />
+                  <span class="traffic__name">{{ s.name }}</span>
+                  <b>{{ s.percent }}%</b>
+                </li>
+              </ul>
+            </div>
+          </MCard>
+        </MGridItem>
+      </MGrid>
+
+      <!-- 待办 + 动态 -->
+      <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
+        <MGridItem>
+          <MCard class="page-card" title="待办事项" :subtitle="`共 ${todoList.filter((t) => !t.done).length} 项未完成`" bordered shadow="always">
+            <ul class="todo">
+              <li v-for="t in todoList" :key="t.id" :class="{ 'todo--done': t.done }">
+                <MCheckbox v-model="t.done" :aria-label="`完成待办：${t.title}`" />
+                <span class="todo__title">{{ t.title }}</span>
+                <MTag
+                  :value="PRIORITY_TAG[t.priority].label"
+                  :severity="PRIORITY_TAG[t.priority].severity"
+                  size="small"
+                  rounded
+                />
+                <span class="todo__time">{{ t.time }}</span>
               </li>
             </ul>
-          </div>
-        </MCard>
-      </MGridItem>
-    </MGrid>
+          </MCard>
+        </MGridItem>
 
-    <!-- 待办 + 动态 -->
-    <MGrid cols="1 l:2" :x-gap="16" :y-gap="16" responsive="screen">
-      <MGridItem>
-        <MCard class="page-card" title="待办事项" :subtitle="`共 ${todoList.filter((t) => !t.done).length} 项未完成`" bordered shadow="always">
-          <ul class="todo">
-            <li v-for="t in todoList" :key="t.id" :class="{ 'todo--done': t.done }">
-              <MCheckbox v-model="t.done" :aria-label="`完成待办：${t.title}`" />
-              <span class="todo__title">{{ t.title }}</span>
-              <MTag
-                :value="PRIORITY_TAG[t.priority].label"
-                :severity="PRIORITY_TAG[t.priority].severity"
-                size="small"
-                rounded
-              />
-              <span class="todo__time">{{ t.time }}</span>
-            </li>
-          </ul>
-        </MCard>
-      </MGridItem>
-
-      <MGridItem>
-        <MCard class="page-card" title="最近动态" subtitle="系统与用户操作记录" bordered shadow="always">
-          <MTimeline :value="timelineEvents" />
-        </MCard>
-      </MGridItem>
-    </MGrid>
-  </MPageContent>
+        <MGridItem>
+          <MCard class="page-card" title="最近动态" subtitle="系统与用户操作记录" bordered shadow="always">
+            <MTimeline :value="timelineEvents" />
+          </MCard>
+        </MGridItem>
+      </MGrid>
+    </MPageContent>
   </MScrollbar>
 </template>
 

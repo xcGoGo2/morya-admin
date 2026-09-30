@@ -28,8 +28,8 @@ const detailOpen = ref(false)
 const current = ref<OrderRecord | null>(null)
 const pendingCancel = ref<OrderRecord | null>(null)
 
-const statusMeta: Record<OrderStatus, { label: string, severity: 'warn' | 'primary' | 'info' | 'success' | 'secondary' }> = {
-  pending: { label: '待支付', severity: 'warn' },
+const statusMeta: Record<OrderStatus, { label: string, severity: 'warning' | 'primary' | 'info' | 'success' | 'secondary' }> = {
+  pending: { label: '待支付', severity: 'warning' },
   paid: { label: '已支付', severity: 'primary' },
   shipped: { label: '已发货', severity: 'info' },
   completed: { label: '已完成', severity: 'success' },

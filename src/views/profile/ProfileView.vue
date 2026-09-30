@@ -549,6 +549,7 @@ const identityMeta = computed(() =>
   border: 1px solid var(--m-color-border);
   border-radius: var(--m-radius-md);
   background: var(--m-color-fill-lighter);
+  box-shadow: var(--m-shadow-sm);
   overflow: hidden;
 }
 

@@ -16,7 +16,7 @@ export interface AuthUser {
 }
 
 export type NotifyKind = 'notice' | 'message' | 'todo'
-export type Tone = 'primary' | 'success' | 'warn' | 'help' | 'info'
+export type Tone = 'primary' | 'success' | 'warning' | 'help' | 'info'
 
 export interface NotifyItem {
   id: number
@@ -37,7 +37,6 @@ export interface StatItem {
   hint: string
   up: boolean
   icon: IconName
-  severity: 'primary' | 'success' | 'warn' | 'danger'
 }
 
 export interface TodoItem {
@@ -53,7 +52,7 @@ export interface ActivityItem {
   content: string
   time: string
   icon: IconName
-  severity: 'success' | 'info' | 'warn' | 'danger'
+  severity: 'success' | 'info' | 'warning' | 'danger'
 }
 
 export interface DeviceItem {

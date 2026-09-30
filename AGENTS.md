@@ -22,12 +22,12 @@ Editor-neutral always-on guidance for AI agents (Cursor, VS Code, Zed, Copilot, 
 
 ## MCP / skills map
 
-| Need | Use |
-| --- | --- |
+| Need                 | Use                                                   |
+| -------------------- | ----------------------------------------------------- |
 | Page plan + snippets | `recommend_page`, `map_reference`, `get_page_snippet` |
-| Signature shells | `get_style_shells` |
-| Tokens / composition | `get_design_rules` |
-| Component pick | `recommend_component`, `get_component`, `get_example` |
-| Offline recipes | skill `references/` under `morya-ui-pages` |
+| Signature shells     | `get_style_shells`                                    |
+| Tokens / composition | `get_design_rules`                                    |
+| Component pick       | `recommend_component`, `get_component`, `get_example` |
+| Offline recipes      | skill `references/` under `morya-ui-pages`            |
 
 Canonical skills live under `.agents/skills/` (Cursor, Zed, VS Code Copilot). Setup also mirrors them into `.claude/skills`, `.windsurf/skills`, and `.github/skills` for Claude Code / Windsurf / Copilot discovery. MCP configs: Cursor / VS Code / Zed + root `.mcp.json`. Reload MCP after `npx @morya-ui/setup ai`. Zed may require trusting the worktree before project skills load.
