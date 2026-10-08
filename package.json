@@ -12,7 +12,7 @@
     "check:colors": "node scripts/check-raw-colors.mjs"
   },
   "dependencies": {
-    "morya-ui": "^0.4.0",
+    "morya-ui": "^0.4.1",
     "vue": "^3.5.42",
     "vue-router": "^5.3.1"
   },

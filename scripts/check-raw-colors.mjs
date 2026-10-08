@@ -6,7 +6,6 @@
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import path from 'node:path'
-import process from 'node:process'
 
 const roots = process.argv.slice(2).length ? process.argv.slice(2) : ['src']
 const IGNORE_DIRS = new Set(['node_modules', 'dist', 'coverage', 'design-tokens', 'theme', '.git'])
