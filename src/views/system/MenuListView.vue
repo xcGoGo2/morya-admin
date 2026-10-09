@@ -215,7 +215,7 @@ function confirmDelete() {
   <MPageContent fill aria-label="菜单管理">
     <MPageHeader title="菜单管理" description="维护侧栏目录、页面路由与按钮级权限节点。">
       <template #actions>
-        <MButton label="新建菜单" icon="plus" severity="primary" @click="openCreate()" />
+        <MButton label="新建菜单" icon="plus" @click="openCreate()" type="primary" />
       </template>
     </MPageHeader>
 
@@ -231,8 +231,8 @@ function confirmDelete() {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -250,33 +250,26 @@ function confirmDelete() {
         <MTag
           :value="typeLabel[value as MenuType]"
           size="small"
-          :severity="value === 'directory' ? 'help' : value === 'menu' ? 'primary' : 'secondary'"
+          :type="value === 'directory' ? 'help' : value === 'menu' ? 'primary' : 'secondary'"
         />
       </template>
       <template #cell-status="{ value }">
         <MStatus
           :label="value === 'active' ? '启用' : '停用'"
-          :severity="value === 'active' ? 'success' : 'secondary'"
+          :type="value === 'active' ? 'success' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
-          <MButton
-            v-if="row.type !== 'button'"
-            label="新增"
-            severity="secondary"
-            size="small"
-            text
-            @click="openCreate(String(row.id))"
-          />
-          <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
-          <MButton label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
+          <MButton v-if="row.type !== 'button'" label="新增" size="small" @click="openCreate(String(row.id))" type="text" />
+          <MButton label="编辑" size="small" @click="openEditById(row.id)" type="text" />
+          <MButton label="删除" size="small" @click="askDeleteById(row.id)" color="danger" variant="text" />
         </MSpace>
       </template>
       <template #empty>
         <MEmpty title="还没有菜单" description="先创建目录，再挂载页面与按钮权限。" icon="list">
           <template #extra>
-            <MButton label="新建菜单" severity="primary" @click="openCreate()" />
+            <MButton label="新建菜单" @click="openCreate()" type="primary" />
           </template>
         </MEmpty>
       </template>
@@ -347,8 +340,8 @@ function confirmDelete() {
       </MForm>
       <template #footer>
         <MSpace style="justify-content: flex-end; width: 100%">
-          <MButton label="取消" severity="secondary" text :disabled="submitting" @click="closeDialog" />
-          <MButton label="保存" severity="primary" :loading="submitting" @click="onSave" />
+          <MButton label="取消" :disabled="submitting" @click="closeDialog" type="text" />
+          <MButton label="保存" :loading="submitting" @click="onSave" type="primary" />
         </MSpace>
       </template>
     </MDialog>
@@ -359,7 +352,7 @@ function confirmDelete() {
       :message="pendingDelete ? `确定删除「${pendingDelete.name}」？` : ''"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"

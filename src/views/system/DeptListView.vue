@@ -186,7 +186,7 @@ function confirmDelete() {
   <MPageContent fill aria-label="部门管理">
     <MPageHeader title="部门管理" description="维护组织架构与各部门负责人信息。">
       <template #actions>
-        <MButton label="新建部门" icon="plus" severity="primary" @click="openCreate()" />
+        <MButton label="新建部门" icon="plus" @click="openCreate()" type="primary" />
       </template>
     </MPageHeader>
 
@@ -195,8 +195,8 @@ function confirmDelete() {
         <MInput v-model="keyword" placeholder="搜索部门 / 负责人" clearable style="width: 16rem" />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -213,20 +213,20 @@ function confirmDelete() {
       <template #cell-status="{ value }">
         <MStatus
           :label="value === 'active' ? '启用' : '停用'"
-          :severity="value === 'active' ? 'success' : 'secondary'"
+          :type="value === 'active' ? 'success' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
-          <MButton label="新增" severity="secondary" size="small" text @click="openCreate(String(row.id))" />
-          <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
-          <MButton label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
+          <MButton label="新增" size="small" @click="openCreate(String(row.id))" type="text" />
+          <MButton label="编辑" size="small" @click="openEditById(row.id)" type="text" />
+          <MButton label="删除" size="small" @click="askDeleteById(row.id)" color="danger" variant="text" />
         </MSpace>
       </template>
       <template #empty>
         <MEmpty title="还没有部门" description="先创建总部，再挂载下级组织。" icon="sitemap">
           <template #extra>
-            <MButton label="新建部门" severity="primary" @click="openCreate()" />
+            <MButton label="新建部门" @click="openCreate()" type="primary" />
           </template>
         </MEmpty>
       </template>
@@ -287,8 +287,8 @@ function confirmDelete() {
       </MForm>
       <template #footer>
         <MSpace style="justify-content: flex-end; width: 100%">
-          <MButton label="取消" severity="secondary" text :disabled="submitting" @click="closeDialog" />
-          <MButton label="保存" severity="primary" :loading="submitting" @click="onSave" />
+          <MButton label="取消" :disabled="submitting" @click="closeDialog" type="text" />
+          <MButton label="保存" :loading="submitting" @click="onSave" type="primary" />
         </MSpace>
       </template>
     </MDialog>
@@ -299,7 +299,7 @@ function confirmDelete() {
       :message="pendingDelete ? `确定删除部门「${pendingDelete.name}」？` : ''"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"

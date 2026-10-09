@@ -230,7 +230,7 @@ function confirmBatchDelete() {
   <MPageContent fill aria-label="用户管理">
     <MPageHeader title="用户管理" description="维护后台账号、所属部门与角色分配。">
       <template #actions>
-        <MButton v-auth="'user:create'" label="新建用户" icon="plus" severity="primary" @click="openCreate" />
+        <MButton v-auth="'user:create'" label="新建用户" icon="plus" @click="openCreate" type="primary" />
       </template>
     </MPageHeader>
 
@@ -250,8 +250,8 @@ function confirmBatchDelete() {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
       <template #advanced>
         <MSpace wrap>
@@ -281,7 +281,7 @@ function confirmBatchDelete() {
     <MPageToolbar v-if="selection.length">
       <MSpace>
         <span class="toolbar-hint">已选 {{ selection.length }} 项</span>
-        <MButton v-auth="'user:delete'" label="批量删除" icon="trash" severity="danger" text @click="batchDeleteOpen = true" />
+        <MButton v-auth="'user:delete'" label="批量删除" icon="trash" @click="batchDeleteOpen = true" color="danger" variant="text" />
       </MSpace>
     </MPageToolbar>
 
@@ -301,13 +301,13 @@ function confirmBatchDelete() {
       <template #cell-status="{ value }">
         <MStatus
           :label="value === 'active' ? '启用' : '停用'"
-          :severity="value === 'active' ? 'success' : 'secondary'"
+          :type="value === 'active' ? 'success' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
-          <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
-          <MButton v-auth="'user:delete'" label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
+          <MButton label="编辑" size="small" @click="openEditById(row.id)" type="text" />
+          <MButton v-auth="'user:delete'" label="删除" size="small" @click="askDeleteById(row.id)" color="danger" variant="text" />
         </MSpace>
       </template>
       <template #empty>
@@ -317,7 +317,7 @@ function confirmBatchDelete() {
           icon="users"
         >
           <template #extra>
-            <MButton v-auth="'user:create'" label="新建用户" severity="primary" @click="openCreate" />
+            <MButton v-auth="'user:create'" label="新建用户" @click="openCreate" type="primary" />
           </template>
         </MEmpty>
       </template>
@@ -377,8 +377,8 @@ function confirmBatchDelete() {
 
       <template #footer>
         <MSpace style="justify-content: flex-end; width: 100%">
-          <MButton label="取消" severity="secondary" text :disabled="submitting" @click="closeDialog" />
-          <MButton label="保存" severity="primary" :loading="submitting" @click="onSave" />
+          <MButton label="取消" :disabled="submitting" @click="closeDialog" type="text" />
+          <MButton label="保存" :loading="submitting" @click="onSave" type="primary" />
         </MSpace>
       </template>
     </MDialog>
@@ -389,7 +389,7 @@ function confirmBatchDelete() {
       :message="pendingDelete ? `确定删除用户「${pendingDelete.nickname}」？此操作不可恢复。` : ''"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"
@@ -401,7 +401,7 @@ function confirmBatchDelete() {
       :message="`确定删除选中的 ${selection.length} 个用户？此操作不可恢复。`"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmBatchDelete"
     />

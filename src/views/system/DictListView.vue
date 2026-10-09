@@ -262,7 +262,7 @@ function removeItem(id: unknown) {
   <MPageContent fill aria-label="字典管理">
     <MPageHeader title="字典管理" description="维护枚举字典类型与字典项，供业务下拉复用。">
       <template #actions>
-        <MButton label="新建字典" icon="plus" severity="primary" @click="openCreate" />
+        <MButton label="新建字典" icon="plus" @click="openCreate" type="primary" />
       </template>
     </MPageHeader>
 
@@ -278,8 +278,8 @@ function removeItem(id: unknown) {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -313,19 +313,19 @@ function removeItem(id: unknown) {
         <template #cell-status="{ value }">
           <MStatus
             :label="value === 'active' ? '启用' : '停用'"
-            :severity="value === 'active' ? 'success' : 'secondary'"
+            :type="value === 'active' ? 'success' : 'secondary'"
           />
         </template>
         <template #cell-actions="{ row }">
           <MSpace>
-            <MButton label="编辑" severity="secondary" size="small" text @click.stop="openEditById(row.id)" />
-            <MButton label="删除" severity="danger" size="small" text @click.stop="askDeleteById(row.id)" />
+            <MButton label="编辑" size="small" @click.stop="openEditById(row.id)" type="text" />
+            <MButton label="删除" size="small" @click.stop="askDeleteById(row.id)" color="danger" variant="text" />
           </MSpace>
         </template>
         <template #empty>
           <MEmpty title="还没有字典" description="新建字典类型后可维护字典项。" icon="list">
             <template #extra>
-              <MButton label="新建字典" severity="primary" @click="openCreate" />
+              <MButton label="新建字典" @click="openCreate" type="primary" />
             </template>
           </MEmpty>
         </template>
@@ -359,11 +359,11 @@ function removeItem(id: unknown) {
           <template #cell-status="{ value }">
             <MStatus
               :label="value === 'active' ? '启用' : '停用'"
-              :severity="value === 'active' ? 'success' : 'secondary'"
+              :type="value === 'active' ? 'success' : 'secondary'"
             />
           </template>
           <template #cell-actions="{ row }">
-            <MButton label="删除" severity="danger" size="small" text @click="removeItem(row.id)" />
+            <MButton label="删除" size="small" @click="removeItem(row.id)" color="danger" variant="text" />
           </template>
           <template #empty>
             <MEmpty simple title="" description="暂无字典项" />
@@ -400,8 +400,8 @@ function removeItem(id: unknown) {
           </template>
         </MFormItem>
         <MSpace style="justify-content: flex-end; margin-top: var(--m-space-4)">
-          <MButton label="取消" severity="secondary" text @click="dialogOpen = false" />
-          <MButton label="保存" severity="primary" native-type="submit" :loading="submitting" />
+          <MButton label="取消" @click="dialogOpen = false" type="text" />
+          <MButton label="保存" html-type="submit" :loading="submitting" type="primary" />
         </MSpace>
       </MForm>
     </MDialog>
@@ -419,8 +419,8 @@ function removeItem(id: unknown) {
           </template>
         </MFormItem>
         <MSpace style="justify-content: flex-end; margin-top: var(--m-space-4)">
-          <MButton label="取消" severity="secondary" text @click="itemDialogOpen = false" />
-          <MButton label="添加" severity="primary" native-type="submit" />
+          <MButton label="取消" @click="itemDialogOpen = false" type="text" />
+          <MButton label="添加" html-type="submit" type="primary" />
         </MSpace>
       </MForm>
     </MDialog>
@@ -431,7 +431,7 @@ function removeItem(id: unknown) {
       :message="pendingDelete ? `确定删除字典「${pendingDelete.name}」及其全部字典项？` : ''"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"

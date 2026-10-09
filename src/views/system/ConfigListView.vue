@@ -153,7 +153,7 @@ async function onSave() {
   <MPageContent fill aria-label="参数配置">
     <MPageHeader title="参数配置" description="维护系统级键值参数，演示环境仅保存在内存中。">
       <template #actions>
-        <MButton label="新建参数" icon="plus" severity="primary" @click="openCreate" />
+        <MButton label="新建参数" icon="plus" @click="openCreate" type="primary" />
       </template>
     </MPageHeader>
 
@@ -162,8 +162,8 @@ async function onSave() {
         <MInput v-model="keyword" placeholder="搜索名称 / 键 / 值" clearable style="width: 16rem" />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -191,12 +191,12 @@ async function onSave() {
       aria-label="参数列表"
     >
       <template #cell-actions="{ row }">
-        <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
+        <MButton label="编辑" size="small" @click="openEditById(row.id)" type="text" />
       </template>
       <template #empty>
         <MEmpty title="还没有参数" description="新建参数以配置系统行为。" icon="settings">
           <template #extra>
-            <MButton label="新建参数" severity="primary" @click="openCreate" />
+            <MButton label="新建参数" @click="openCreate" type="primary" />
           </template>
         </MEmpty>
       </template>
@@ -230,8 +230,8 @@ async function onSave() {
           </template>
         </MFormItem>
         <MSpace style="justify-content: flex-end; margin-top: var(--m-space-4)">
-          <MButton label="取消" severity="secondary" text @click="dialogOpen = false" />
-          <MButton label="保存" severity="primary" native-type="submit" :loading="submitting" />
+          <MButton label="取消" @click="dialogOpen = false" type="text" />
+          <MButton label="保存" html-type="submit" :loading="submitting" type="primary" />
         </MSpace>
       </MForm>
     </MDialog>

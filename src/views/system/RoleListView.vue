@@ -251,7 +251,7 @@ function saveGrant() {
   <MPageContent fill aria-label="角色管理">
     <MPageHeader title="角色管理" description="配置角色标识与业务说明，再在用户管理中分配。">
       <template #actions>
-        <MButton label="新建角色" icon="plus" severity="primary" @click="openCreate" />
+        <MButton label="新建角色" icon="plus" @click="openCreate" type="primary" />
       </template>
     </MPageHeader>
 
@@ -267,8 +267,8 @@ function saveGrant() {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -298,20 +298,20 @@ function saveGrant() {
       <template #cell-status="{ value }">
         <MStatus
           :label="value === 'active' ? '启用' : '停用'"
-          :severity="value === 'active' ? 'success' : 'secondary'"
+          :type="value === 'active' ? 'success' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
-          <MButton label="授权" severity="secondary" size="small" text @click="openGrantById(row.id)" />
-          <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
-          <MButton label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
+          <MButton label="授权" size="small" @click="openGrantById(row.id)" type="text" />
+          <MButton label="编辑" size="small" @click="openEditById(row.id)" type="text" />
+          <MButton label="删除" size="small" @click="askDeleteById(row.id)" color="danger" variant="text" />
         </MSpace>
       </template>
       <template #empty>
         <MEmpty title="还没有角色" description="创建角色后即可在用户管理中分配。" icon="shield-check">
           <template #extra>
-            <MButton label="新建角色" severity="primary" @click="openCreate" />
+            <MButton label="新建角色" @click="openCreate" type="primary" />
           </template>
         </MEmpty>
       </template>
@@ -355,8 +355,8 @@ function saveGrant() {
       </MForm>
       <template #footer>
         <MSpace style="justify-content: flex-end; width: 100%">
-          <MButton label="取消" severity="secondary" text :disabled="submitting" @click="closeDialog" />
-          <MButton label="保存" severity="primary" :loading="submitting" @click="onSave" />
+          <MButton label="取消" :disabled="submitting" @click="closeDialog" type="text" />
+          <MButton label="保存" :loading="submitting" @click="onSave" type="primary" />
         </MSpace>
       </template>
     </MDialog>
@@ -367,7 +367,7 @@ function saveGrant() {
       :message="pendingDelete ? `确定删除角色「${pendingDelete.name}」？` : ''"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"
@@ -390,13 +390,8 @@ function saveGrant() {
         :check-strictly="false"
       />
       <MSpace style="justify-content: flex-end; margin-top: var(--m-space-6)">
-        <MButton label="取消" severity="secondary" text @click="grantOpen = false" />
-        <MButton
-          label="保存"
-          severity="primary"
-          :disabled="grantReadonly"
-          @click="saveGrant"
-        />
+        <MButton label="取消" @click="grantOpen = false" type="text" />
+        <MButton label="保存" :disabled="grantReadonly" @click="saveGrant" type="primary" />
       </MSpace>
     </MDrawer>
   </MPageContent>
