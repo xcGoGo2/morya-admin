@@ -28,12 +28,12 @@ const detailOpen = ref(false)
 const current = ref<OrderRecord | null>(null)
 const pendingCancel = ref<OrderRecord | null>(null)
 
-const statusMeta: Record<OrderStatus, { label: string, severity: 'warning' | 'primary' | 'info' | 'success' | 'secondary' }> = {
-  pending: { label: '待支付', severity: 'warning' },
-  paid: { label: '已支付', severity: 'primary' },
-  shipped: { label: '已发货', severity: 'info' },
-  completed: { label: '已完成', severity: 'success' },
-  cancelled: { label: '已取消', severity: 'secondary' },
+const statusMeta: Record<OrderStatus, { label: string, type: 'warning' | 'primary' | 'info' | 'success' | 'secondary' }> = {
+  pending: { label: '待支付', type: 'warning' },
+  paid: { label: '已支付', type: 'primary' },
+  shipped: { label: '已发货', type: 'info' },
+  completed: { label: '已完成', type: 'success' },
+  cancelled: { label: '已取消', type: 'secondary' },
 }
 
 const columns = [
@@ -131,12 +131,7 @@ function canCancel(statusValue: unknown) {
   <MPageContent fill aria-label="订单管理">
     <MPageHeader title="订单管理" description="查看支付进度，处理发货与取消。">
       <template #actions>
-        <MButton
-          label="导出明细"
-          icon="download"
-          severity="secondary"
-          @click="message.success('已开始导出当前筛选结果')"
-        />
+        <MButton label="导出明细" icon="download" @click="message.success('已开始导出当前筛选结果')" />
       </template>
     </MPageHeader>
 
@@ -152,8 +147,8 @@ function canCancel(statusValue: unknown) {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -186,21 +181,13 @@ function canCancel(statusValue: unknown) {
       <template #cell-status="{ value }">
         <MStatus
           :label="statusMeta[value as OrderStatus].label"
-          :severity="statusMeta[value as OrderStatus].severity"
+          :type="statusMeta[value as OrderStatus].type"
         />
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
-          <MButton label="详情" severity="secondary" size="small" text @click="openDetailById(row.id)" />
-          <MButton
-            v-if="canCancel(row.status)"
-            v-auth="'order:cancel'"
-            label="取消"
-            severity="danger"
-            size="small"
-            text
-            @click="askCancelById(row.id)"
-          />
+          <MButton label="详情" size="small" @click="openDetailById(row.id)" type="text" />
+          <MButton v-if="canCancel(row.status)" v-auth="'order:cancel'" label="取消" size="small" @click="askCancelById(row.id)" color="danger" variant="text" />
         </MSpace>
       </template>
       <template #empty>
@@ -224,7 +211,7 @@ function canCancel(statusValue: unknown) {
             <dd>
               <MStatus
                 :label="statusMeta[current.status].label"
-                :severity="statusMeta[current.status].severity"
+                :type="statusMeta[current.status].type"
               />
             </dd>
           </div>
@@ -233,14 +220,8 @@ function canCancel(statusValue: unknown) {
       </template>
       <template v-if="current" #footer>
         <MSpace style="justify-content: flex-end; width: 100%">
-          <MButton label="关闭" severity="secondary" text @click="detailOpen = false" />
-          <MButton
-            v-if="current.status === 'paid'"
-            v-auth="'order:ship'"
-            label="确认发货"
-            severity="primary"
-            @click="markShipped"
-          />
+          <MButton label="关闭" @click="detailOpen = false" type="text" />
+          <MButton v-if="current.status === 'paid'" v-auth="'order:ship'" label="确认发货" @click="markShipped" type="primary" />
         </MSpace>
       </template>
     </MDrawer>
@@ -251,7 +232,7 @@ function canCancel(statusValue: unknown) {
       :message="pendingCancel ? `确定取消订单「${pendingCancel.orderNo}」？取消后不可恢复为进行中。` : ''"
       accept-label="取消订单"
       reject-label="返回"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmCancel"
       @update:model-value="(open) => { if (!open) pendingCancel = null }"

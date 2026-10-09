@@ -234,7 +234,7 @@ function isOnShelf(statusValue: unknown) {
   <MPageContent fill aria-label="商品管理">
     <MPageHeader title="商品管理" description="维护订阅套餐、增值包与服务类商品。">
       <template #actions>
-        <MButton label="新建商品" icon="plus" severity="primary" @click="openCreate" />
+        <MButton label="新建商品" icon="plus" @click="openCreate" type="primary" />
       </template>
     </MPageHeader>
 
@@ -254,8 +254,8 @@ function isOnShelf(statusValue: unknown) {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
       <template #advanced>
         <MSpace wrap>
@@ -299,26 +299,20 @@ function isOnShelf(statusValue: unknown) {
       <template #cell-status="{ value }">
         <MStatus
           :label="value === 'on' ? '上架' : '下架'"
-          :severity="value === 'on' ? 'success' : 'secondary'"
+          :type="value === 'on' ? 'success' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
         <MSpace>
-          <MButton label="编辑" severity="secondary" size="small" text @click="openEditById(row.id)" />
-          <MButton
-            :label="isOnShelf(row.status) ? '下架' : '上架'"
-            severity="secondary"
-            size="small"
-            text
-            @click="toggleStatusById(row.id)"
-          />
-          <MButton label="删除" severity="danger" size="small" text @click="askDeleteById(row.id)" />
+          <MButton label="编辑" size="small" @click="openEditById(row.id)" type="text" />
+          <MButton :label="isOnShelf(row.status) ? '下架' : '上架'" size="small" @click="toggleStatusById(row.id)" type="text" />
+          <MButton label="删除" size="small" @click="askDeleteById(row.id)" color="danger" variant="text" />
         </MSpace>
       </template>
       <template #empty>
         <MEmpty title="还没有商品" description="创建第一个套餐或增值包后即可上架销售。" icon="box">
           <template #extra>
-            <MButton label="新建商品" severity="primary" @click="openCreate" />
+            <MButton label="新建商品" @click="openCreate" type="primary" />
           </template>
         </MEmpty>
       </template>
@@ -372,8 +366,8 @@ function isOnShelf(statusValue: unknown) {
       </MForm>
       <template #footer>
         <MSpace style="justify-content: flex-end; width: 100%">
-          <MButton label="取消" severity="secondary" text :disabled="submitting" @click="closeDialog" />
-          <MButton label="保存" severity="primary" :loading="submitting" @click="onSave" />
+          <MButton label="取消" :disabled="submitting" @click="closeDialog" type="text" />
+          <MButton label="保存" :loading="submitting" @click="onSave" type="primary" />
         </MSpace>
       </template>
     </MDialog>
@@ -384,7 +378,7 @@ function isOnShelf(statusValue: unknown) {
       :message="pendingDelete ? `确定删除商品「${pendingDelete.name}」？` : ''"
       accept-label="删除"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmDelete"
       @update:model-value="(open) => { if (!open) pendingDelete = null }"
