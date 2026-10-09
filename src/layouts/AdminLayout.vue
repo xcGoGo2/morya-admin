@@ -122,7 +122,7 @@ function onTabClose(value: string) {
       :width="234"
       :collapsed-width="64"
       collapse-mode="width"
-      show-trigger="bar"
+      show-trigger="arrow-circle"
     >
       <div class="brand">
         <span class="brand__logo" aria-hidden="true"><MIcon name="bolt" size="sm" /></span>
@@ -134,7 +134,6 @@ function onTabClose(value: string) {
         :selected-key="selectedKey"
         :collapsed="collapsed"
         :collapsed-width="64"
-        :default-expanded-keys="defaultExpandedKeys"
         embedded
         aria-label="主导航"
       />
