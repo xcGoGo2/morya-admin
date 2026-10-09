@@ -96,14 +96,7 @@ async function onSubmit() {
     </aside>
 
     <main class="login-main">
-      <MButton
-        class="login-theme"
-        :icon="isDark ? 'sun' : 'moon'"
-        icon-only
-        quaternary
-        :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
-        @click="toggleTheme"
-      />
+      <MButton class="login-theme" :icon="isDark ? 'sun' : 'moon'" icon-only :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'" @click="toggleTheme" type="text" />
 
       <div class="login-panel">
         <header class="login-panel__header">
@@ -151,16 +144,10 @@ async function onSubmit() {
 
           <div class="login-panel__row">
             <MCheckbox v-model="model.remember" label="记住我" />
-            <MButton label="忘记密码" link size="small" @click="router.push('/forgot-password')" />
+            <MButton label="忘记密码" size="small" @click="router.push('/forgot-password')" type="link" />
           </div>
 
-          <MButton
-            native-type="submit"
-            label="登录"
-            size="large"
-            :loading="submitting"
-            fluid
-          />
+          <MButton type="primary" html-type="submit" label="登录" size="large" :loading="submitting" block />
         </MForm>
 
         <p class="login-panel__tip">

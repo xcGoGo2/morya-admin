@@ -85,14 +85,7 @@ async function onSubmit() {
     </aside>
 
     <main class="login-main">
-      <MButton
-        class="login-theme"
-        :icon="isDark ? 'sun' : 'moon'"
-        icon-only
-        quaternary
-        :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
-        @click="toggleTheme"
-      />
+      <MButton class="login-theme" :icon="isDark ? 'sun' : 'moon'" icon-only :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'" @click="toggleTheme" type="text" />
 
       <div class="login-panel">
         <template v-if="!sent">
@@ -128,22 +121,10 @@ async function onSubmit() {
               </template>
             </MFormItem>
 
-            <MButton
-              native-type="submit"
-              label="发送重置链接"
-              size="large"
-              :loading="submitting"
-              fluid
-            />
+            <MButton type="primary" html-type="submit" label="发送重置链接" size="large" :loading="submitting" block />
           </MForm>
 
-          <MButton
-            class="login-back"
-            label="返回登录"
-            link
-            icon="arrow-left"
-            @click="router.push('/login')"
-          />
+          <MButton class="login-back" label="返回登录" icon="arrow-left" @click="router.push('/login')" type="link" />
         </template>
 
         <MResult

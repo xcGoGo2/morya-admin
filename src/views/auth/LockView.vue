@@ -116,21 +116,14 @@ function backToLogin() {
               <MInputPassword :id="id" v-model="model.password" :invalid="invalid" fluid />
             </template>
           </MFormItem>
-          <MButton
-            native-type="submit"
-            icon="login"
-            label="解锁"
-            size="large"
-            :loading="unlocking"
-            fluid
-          />
+          <MButton type="primary" html-type="submit" icon="login" label="解锁" size="large" :loading="unlocking" block />
         </MForm>
 
         <p class="lock-panel__tip">
           演示环境，输入任意密码即可解锁
         </p>
 
-        <MButton label="返回登录页" link size="small" class="lock-panel__back" @click="backToLogin" />
+        <MButton label="返回登录页" size="small" class="lock-panel__back" @click="backToLogin" type="link" />
       </div>
     </main>
   </div>
