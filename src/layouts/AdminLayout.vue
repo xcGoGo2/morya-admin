@@ -5,6 +5,7 @@ import {
   MButton,
   MCard,
   MCommandMenu,
+  MDivider,
   MFlex,
   MIcon,
   MLayout,
@@ -141,19 +142,20 @@ function onTabClose(value: string) {
 
     <MLayout>
       <MLayoutHeader bordered padding="0 var(--m-space-4)" class="topbar">
-        <MButton icon="menu" icon-only aria-label="折叠菜单" @click="collapsed = !collapsed" type="text" />
+        <MButton icon="menu" icon-only aria-label="折叠菜单" type="text" @click="collapsed = !collapsed" />
 
         <MBreadcrumb :model="breadcrumbModel" class="topbar__crumb" />
 
         <MFlex class="topbar__right gap-2" align="center">
-          <MButton class="topbar__search" icon="search" icon-only aria-label="搜索菜单" @click="commandOpen = true" type="text" />
+          <MButton class="topbar__search" icon="search" icon-only aria-label="搜索菜单" type="text" @click="commandOpen = true" />
 
-          <MButton :icon="isDark ? 'sun' : 'moon'" icon-only :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'" @click="toggleTheme" type="text" />
-          <MButton icon="settings" icon-only aria-label="布局设置" @click="settingsOpen = true" type="text" />
-          <MButton icon="maximize" icon-only aria-label="全屏" @click="toggleFullscreen" type="text" />
+          <MButton :icon="isDark ? 'sun' : 'moon'" icon-only :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'" type="text" @click="toggleTheme" />
+          <MButton icon="settings" icon-only aria-label="布局设置" type="text" @click="settingsOpen = true" />
+          <MButton icon="maximize" icon-only aria-label="全屏" type="text" @click="toggleFullscreen" />
 
           <NotifyPopover />
-          <UserMenuPopover class="ml-4" />
+          <MDivider layout="vertical" class="mr-0 ml-3" />
+          <UserMenuPopover />
         </MFlex>
       </MLayoutHeader>
 

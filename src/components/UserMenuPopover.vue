@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MAvatar, MBadge, MButton, message, MIcon, MPopover } from 'morya-ui'
+import { MAvatar, MBadge, MButton, message, MFlex, MIcon, MPopover, MSpace } from 'morya-ui'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { logoutApi } from '../api/auth'
@@ -46,11 +46,13 @@ async function onLogout() {
 
 <template>
   <MPopover v-model="open" placement="bottom-end" :pt="{ root: { style: 'padding:0' } }">
-    <MButton type="link" class="user-trigger" :class="{ open }" @click="open = !open">
-      <MAvatar class="user-trigger__avatar" :label="avatarText" shape="circle" />
-      <span class="user-trigger__name">{{ nickname }}</span>
-      <MIcon name="chevron-down" size="sm" class="user-trigger__chev" />
-    </MButton>
+    <MFlex class="user-trigger underline-none cursor-pointer" :class="{ open }" @click="open = !open">
+      <MAvatar size="small" class="user-trigger__avatar" :label="avatarText" shape="circle" />
+      <MSpace :size="4">
+        <span class="user-trigger__name">{{ nickname }}</span>
+        <MIcon name="chevron-down" size="sm" class="user-trigger__chev" />
+      </MSpace>
+    </MFlex>
 
     <template #content>
       <div class="user-panel">
@@ -74,15 +76,21 @@ async function onLogout() {
 
         <div class="user-panel__group">
           <MButton type="text" class="user-panel__item" block @click="go('/profile')">
-            <MIcon name="user" size="sm" />
+            <template #icon>
+              <MIcon name="user" size="sm" />
+            </template>
             <span class="user-panel__label">个人中心</span>
           </MButton>
           <MButton type="text" class="user-panel__item" block @click="go('/profile', { tab: 'security' })">
-            <MIcon name="shield" size="sm" />
+            <template #icon>
+              <MIcon name="shield" size="sm" />
+            </template>
             <span class="user-panel__label">安全设置</span>
           </MButton>
           <MButton type="text" class="user-panel__item" block @click="go('/notify')">
-            <MIcon name="message" size="sm" />
+            <template #icon>
+              <MIcon name="message" size="sm" />
+            </template>
             <span class="user-panel__label">消息中心</span>
             <MBadge :value="5" type="danger" size="small" />
           </MButton>
@@ -90,14 +98,18 @@ async function onLogout() {
 
         <div class="user-panel__group">
           <MButton type="text" class="user-panel__item" block @click="onLock">
-            <MIcon name="lock" size="sm" />
+            <template #icon>
+              <MIcon name="lock" size="sm" />
+            </template>
             <span class="user-panel__label">锁定屏幕</span>
           </MButton>
         </div>
 
         <div class="user-panel__group">
           <MButton type="text" color="danger" class="user-panel__item user-panel__item--danger" block @click="onLogout">
-            <MIcon name="logout" size="sm" />
+            <template #icon>
+              <MIcon name="logout" size="sm" />
+            </template>
             <span class="user-panel__label">退出登录</span>
           </MButton>
         </div>
@@ -110,7 +122,6 @@ async function onLogout() {
 .user-trigger {
   display: flex;
   align-items: center;
-  gap: var(--m-space-2);
 }
 
 .user-trigger__avatar {
