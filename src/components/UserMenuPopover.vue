@@ -46,10 +46,10 @@ async function onLogout() {
 
 <template>
   <MPopover v-model="open" placement="bottom-end" :pt="{ root: { style: 'padding:0' } }">
-    <MButton link :underline="false" severity="secondary" class="user-trigger" :class="{ open }" @click="open = !open">
-      <MAvatar class="mr-2" :label="avatarText" shape="circle" />
-      <span class="mr-2">{{ nickname }}</span>
-      <MIcon name="chevron-down" size="sm" />
+    <MButton type="link" class="user-trigger" :class="{ open }" @click="open = !open">
+      <MAvatar class="user-trigger__avatar" :label="avatarText" shape="circle" />
+      <span class="user-trigger__name">{{ nickname }}</span>
+      <MIcon name="chevron-down" size="sm" class="user-trigger__chev" />
     </MButton>
 
     <template #content>
@@ -73,33 +73,33 @@ async function onLogout() {
         </div>
 
         <div class="user-panel__group">
-          <button type="button" class="user-panel__item" @click="go('/profile')">
+          <MButton type="text" class="user-panel__item" block @click="go('/profile')">
             <MIcon name="user" size="sm" />
             <span class="user-panel__label">个人中心</span>
-          </button>
-          <button type="button" class="user-panel__item" @click="go('/profile', { tab: 'security' })">
+          </MButton>
+          <MButton type="text" class="user-panel__item" block @click="go('/profile', { tab: 'security' })">
             <MIcon name="shield" size="sm" />
             <span class="user-panel__label">安全设置</span>
-          </button>
-          <button type="button" class="user-panel__item" @click="go('/notify')">
+          </MButton>
+          <MButton type="text" class="user-panel__item" block @click="go('/notify')">
             <MIcon name="message" size="sm" />
             <span class="user-panel__label">消息中心</span>
-            <MBadge :value="5" severity="danger" size="small" />
-          </button>
+            <MBadge :value="5" type="danger" size="small" />
+          </MButton>
         </div>
 
         <div class="user-panel__group">
-          <button type="button" class="user-panel__item" @click="onLock">
+          <MButton type="text" class="user-panel__item" block @click="onLock">
             <MIcon name="lock" size="sm" />
             <span class="user-panel__label">锁定屏幕</span>
-          </button>
+          </MButton>
         </div>
 
         <div class="user-panel__group">
-          <button type="button" class="user-panel__item user-panel__item--danger" @click="onLogout">
+          <MButton type="text" color="danger" class="user-panel__item user-panel__item--danger" block @click="onLogout">
             <MIcon name="logout" size="sm" />
             <span class="user-panel__label">退出登录</span>
-          </button>
+          </MButton>
         </div>
       </div>
     </template>
@@ -111,6 +111,10 @@ async function onLogout() {
   display: flex;
   align-items: center;
   gap: var(--m-space-2);
+}
+
+.user-trigger__avatar {
+  flex: none;
 }
 
 .user-trigger__name {
@@ -201,36 +205,23 @@ async function onLogout() {
 }
 
 .user-panel__group {
+  display: grid;
+  gap: var(--m-space-1);
   padding: var(--m-space-1) 0;
   border-top: 1px solid var(--m-color-border);
 }
 
 .user-panel__item {
-  display: flex;
-  align-items: center;
-  gap: var(--m-space-2);
-  width: 100%;
+  justify-content: flex-start;
   height: 2.35rem;
-  padding: 0 var(--m-space-2);
-  border: none;
-  border-radius: var(--m-radius-sm);
-  background: transparent;
   color: var(--m-color-text-muted);
-  font: inherit;
-  font-size: var(--m-font-size-sm);
-  cursor: pointer;
-  transition:
-    background var(--m-motion-fast),
-    color var(--m-motion-fast);
 }
 
 .user-panel__item:hover {
-  background: var(--m-color-fill-lighter);
   color: var(--m-color-primary);
 }
 
 .user-panel__item--danger:hover {
-  background: color-mix(in srgb, var(--m-color-danger) 10%, transparent);
   color: var(--m-color-danger);
 }
 

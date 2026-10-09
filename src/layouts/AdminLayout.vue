@@ -141,47 +141,16 @@ function onTabClose(value: string) {
 
     <MLayout>
       <MLayoutHeader bordered padding="0 var(--m-space-4)" class="topbar">
-        <MButton
-          icon="menu"
-          icon-only
-          quaternary
-          aria-label="折叠菜单"
-          @click="collapsed = !collapsed"
-        />
+        <MButton icon="menu" icon-only aria-label="折叠菜单" @click="collapsed = !collapsed" type="text" />
 
         <MBreadcrumb :model="breadcrumbModel" class="topbar__crumb" />
 
         <MFlex class="topbar__right gap-2" align="center">
-          <MButton
-            class="topbar__search"
-            icon="search"
-            icon-only
-            quaternary
-            aria-label="搜索菜单"
-            @click="commandOpen = true"
-          />
+          <MButton class="topbar__search" icon="search" icon-only aria-label="搜索菜单" @click="commandOpen = true" type="text" />
 
-          <MButton
-            :icon="isDark ? 'sun' : 'moon'"
-            icon-only
-            quaternary
-            :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
-            @click="toggleTheme"
-          />
-          <MButton
-            icon="settings"
-            icon-only
-            quaternary
-            aria-label="布局设置"
-            @click="settingsOpen = true"
-          />
-          <MButton
-            icon="maximize"
-            icon-only
-            quaternary
-            aria-label="全屏"
-            @click="toggleFullscreen"
-          />
+          <MButton :icon="isDark ? 'sun' : 'moon'" icon-only :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'" @click="toggleTheme" type="text" />
+          <MButton icon="settings" icon-only aria-label="布局设置" @click="settingsOpen = true" type="text" />
+          <MButton icon="maximize" icon-only aria-label="全屏" @click="toggleFullscreen" type="text" />
 
           <NotifyPopover />
           <UserMenuPopover class="ml-4" />
@@ -201,7 +170,7 @@ function onTabClose(value: string) {
           :key="t.value"
           :value="t.label"
           :icon="t.icon"
-          :severity="t.value === active ? 'primary' : 'secondary'"
+          :type="t.value === active ? 'primary' : 'secondary'"
           :closable="t.closable"
           :bordered="t.value === active"
           class="tabbar__tag"

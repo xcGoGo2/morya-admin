@@ -42,25 +42,15 @@ function goAll() {
 
 <template>
   <MPopover v-model="open" placement="bottom-end" :pt="{ root: { style: 'padding:0' } }">
-    <MBadge v-if="unreadTotal" :value="unreadTotal" :max="99" severity="danger" size="small">
-      <MButton
-        class="notify-trigger"
-        icon="bell"
-        icon-only
-        link
-        :underline="false"
-        severity="secondary"
-        :aria-label="bellLabel"
-        @click="open = !open"
-      />
+    <MBadge v-if="unreadTotal" :value="unreadTotal" :max="99" type="danger" size="small">
+      <MButton class="notify-trigger" icon="bell" icon-only :aria-label="bellLabel" @click="open = !open" type="link" />
     </MBadge>
     <MButton
       v-else
       class="notify-trigger"
       icon="bell"
-      link
-      :underline="false"
-      severity="secondary"
+      icon-only
+      type="link"
       :aria-label="bellLabel"
       @click="open = !open"
     />
@@ -69,7 +59,7 @@ function goAll() {
       <div class="notify">
         <MTabs v-model="kind" :tabs="kindTabs" aria-label="通知分类">
           <template #extra>
-            <MButton label="全部已读" text size="small" :disabled="!unreadTotal" @click="readAll" />
+            <MButton label="全部已读" size="small" :disabled="!unreadTotal" @click="readAll" type="text" />
           </template>
 
           <MScrollbar class="notify__scroll" max-height="22rem">
@@ -96,7 +86,7 @@ function goAll() {
           </MScrollbar>
         </MTabs>
 
-        <MButton class="notify__foot" label="查看全部" text fluid @click="goAll" />
+        <MButton class="notify__foot" label="查看全部" @click="goAll" block type="text" />
       </div>
     </template>
   </MPopover>

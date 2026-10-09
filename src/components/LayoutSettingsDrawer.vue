@@ -110,7 +110,7 @@ function onReset() {
         </MSpace>
       </section>
 
-      <MButton label="恢复默认" severity="secondary" text fluid @click="onReset" />
+      <MButton label="恢复默认" @click="onReset" block type="text" />
     </div>
   </MDrawer>
 </template>
