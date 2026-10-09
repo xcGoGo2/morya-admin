@@ -84,12 +84,7 @@ function clearFilter(key: string) {
   <MPageContent fill aria-label="登录日志">
     <MPageHeader title="登录日志" description="记录账号登录成功与失败，辅助排查异常访问。">
       <template #actions>
-        <MButton
-          label="刷新"
-          icon="refresh"
-          severity="secondary"
-          @click="message.success('已刷新登录日志')"
-        />
+        <MButton label="刷新" icon="refresh" @click="message.success('已刷新登录日志')" />
       </template>
     </MPageHeader>
 
@@ -105,8 +100,8 @@ function clearFilter(key: string) {
         />
       </MSpace>
       <template #actions>
-        <MButton label="查询" severity="secondary" @click="applyFilters" />
-        <MButton label="重置" severity="secondary" text @click="resetFilters" />
+        <MButton label="查询" @click="applyFilters" />
+        <MButton label="重置" @click="resetFilters" type="text" />
       </template>
     </MPageFilters>
 
@@ -136,7 +131,7 @@ function clearFilter(key: string) {
       <template #cell-result="{ value }">
         <MStatus
           :label="value === 'success' ? '成功' : '失败'"
-          :severity="value === 'success' ? 'success' : 'danger'"
+          :type="value === 'success' ? 'success' : 'danger'"
         />
       </template>
       <template #empty>

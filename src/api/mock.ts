@@ -129,10 +129,10 @@ export const todos: TodoItem[] = [
 
 /** 最近动态 */
 export const activities: ActivityItem[] = [
-  { id: 1, content: '张三 创建了新用户「lisi」', time: '10 分钟前', icon: 'user-plus', severity: 'info' },
-  { id: 2, content: '系统完成每日数据备份', time: '1 小时前', icon: 'database', severity: 'success' },
-  { id: 3, content: '李四 修改了角色「运营专员」的权限', time: '3 小时前', icon: 'shield-check', severity: 'info' },
-  { id: 4, content: '王五 登录了系统', time: '昨天 18:20', icon: 'login', severity: 'warning' },
+  { id: 1, content: '张三 创建了新用户「lisi」', time: '10 分钟前', icon: 'user-plus', type: 'info' },
+  { id: 2, content: '系统完成每日数据备份', time: '1 小时前', icon: 'database', type: 'success' },
+  { id: 3, content: '李四 修改了角色「运营专员」的权限', time: '3 小时前', icon: 'shield-check', type: 'info' },
+  { id: 4, content: '王五 登录了系统', time: '昨天 18:20', icon: 'login', type: 'warning' },
 ]
 
 /** 登录设备 */

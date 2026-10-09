@@ -52,7 +52,7 @@ export interface ActivityItem {
   content: string
   time: string
   icon: IconName
-  severity: 'success' | 'info' | 'warning' | 'danger'
+  type: 'success' | 'info' | 'warning' | 'danger'
 }
 
 export interface DeviceItem {

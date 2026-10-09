@@ -21,10 +21,10 @@ const kindModel = computed<string>({
 })
 const items = ref<NotifyItem[]>(notifications.map(n => ({ ...n })))
 
-const kindMeta: Record<NotifyKind, { label: string, severity: 'primary' | 'info' | 'warning' }> = {
-  notice: { label: '通知', severity: 'primary' },
-  message: { label: '消息', severity: 'info' },
-  todo: { label: '待办', severity: 'warning' },
+const kindMeta: Record<NotifyKind, { label: string, type: 'primary' | 'info' | 'warning' }> = {
+  notice: { label: '通知', type: 'primary' },
+  message: { label: '消息', type: 'info' },
+  todo: { label: '待办', type: 'warning' },
 }
 
 const kindOptions = [
@@ -67,13 +67,7 @@ function readOne(id: unknown) {
   <MPageContent fill aria-label="消息中心">
     <MPageHeader title="消息中心" description="汇总通知、消息与待办，可从顶栏铃铛「查看全部」进入。">
       <template #actions>
-        <MButton
-          label="全部已读"
-          icon="check"
-          severity="secondary"
-          :disabled="!unreadTotal"
-          @click="readAll"
-        />
+        <MButton label="全部已读" icon="check" :disabled="!unreadTotal" @click="readAll" />
       </template>
     </MPageHeader>
 
@@ -98,25 +92,18 @@ function readOne(id: unknown) {
       <template #cell-kind="{ value }">
         <MTag
           :value="kindMeta[value as NotifyKind].label"
-          :severity="kindMeta[value as NotifyKind].severity"
+          :type="kindMeta[value as NotifyKind].type"
           size="small"
         />
       </template>
       <template #cell-unread="{ value }">
         <MStatus
           :label="value ? '未读' : '已读'"
-          :severity="value ? 'warning' : 'secondary'"
+          :type="value ? 'warning' : 'secondary'"
         />
       </template>
       <template #cell-actions="{ row }">
-        <MButton
-          v-if="row.unread"
-          label="标已读"
-          severity="secondary"
-          size="small"
-          text
-          @click="readOne(row.id)"
-        />
+        <MButton v-if="row.unread" label="标已读" size="small" @click="readOne(row.id)" type="text" />
       </template>
       <template #empty>
         <MEmpty title="暂无消息" description="切换分类或稍后再来查看。" icon="bell" />

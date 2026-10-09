@@ -329,21 +329,8 @@ const identityMeta = computed(() =>
 
             <MPageSection variant="actions">
               <MSpace>
-                <MButton
-                  native-type="submit"
-                  label="保存资料"
-                  icon="device-floppy"
-                  severity="primary"
-                  :loading="profileSubmitting"
-                />
-                <MButton
-                  native-type="button"
-                  label="恢复更改"
-                  severity="secondary"
-                  text
-                  :disabled="profileSubmitting"
-                  @click="resetProfile"
-                />
+                <MButton html-type="submit" label="保存资料" icon="device-floppy" :loading="profileSubmitting" type="primary" />
+                <MButton html-type="button" label="恢复更改" :disabled="profileSubmitting" @click="resetProfile" type="text" />
               </MSpace>
             </MPageSection>
           </MForm>
@@ -383,21 +370,8 @@ const identityMeta = computed(() =>
             </MFormItem>
             <MPageSection variant="actions">
               <MSpace>
-                <MButton
-                  native-type="submit"
-                  label="更新密码"
-                  icon="shield-check"
-                  severity="primary"
-                  :loading="securitySubmitting"
-                />
-                <MButton
-                  native-type="button"
-                  label="清空"
-                  severity="secondary"
-                  text
-                  :disabled="securitySubmitting"
-                  @click="resetSecurity"
-                />
+                <MButton html-type="submit" label="更新密码" icon="shield-check" :loading="securitySubmitting" type="primary" />
+                <MButton html-type="button" label="清空" :disabled="securitySubmitting" @click="resetSecurity" type="text" />
               </MSpace>
             </MPageSection>
           </MForm>
@@ -445,13 +419,7 @@ const identityMeta = computed(() =>
               </MGridItem>
             </MGrid>
             <MPageSection variant="actions">
-              <MButton
-                native-type="submit"
-                label="保存偏好"
-                icon="device-floppy"
-                severity="primary"
-                :loading="notifySubmitting"
-              />
+              <MButton html-type="submit" label="保存偏好" icon="device-floppy" :loading="notifySubmitting" type="primary" />
             </MPageSection>
           </MForm>
         </MPageSection>
@@ -463,13 +431,7 @@ const identityMeta = computed(() =>
           aria-label="登录设备"
         >
           <div v-if="otherDevices.length" class="profile-panel__actions">
-            <MButton
-              label="下线其他设备"
-              severity="danger"
-              text
-              size="small"
-              @click="batchOfflineOpen = true"
-            />
+            <MButton label="下线其他设备" size="small" @click="batchOfflineOpen = true" color="danger" variant="text" />
           </div>
 
           <ul v-if="deviceList.length" class="devices">
@@ -480,18 +442,11 @@ const identityMeta = computed(() =>
               <span class="devices__main">
                 <b>
                   {{ d.name }}
-                  <MStatus v-if="d.current" label="当前设备" severity="success" size="small" />
+                  <MStatus v-if="d.current" label="当前设备" type="success" size="small" />
                 </b>
                 <small>{{ d.client }} · {{ d.location }} · {{ d.time }}</small>
               </span>
-              <MButton
-                v-if="!d.current"
-                label="下线"
-                severity="danger"
-                text
-                size="small"
-                @click="pendingDevice = d"
-              />
+              <MButton v-if="!d.current" label="下线" size="small" @click="pendingDevice = d" color="danger" variant="text" />
             </li>
           </ul>
           <MEmpty
@@ -510,7 +465,7 @@ const identityMeta = computed(() =>
       :message="pendingDevice ? `确定将「${pendingDevice.name}」退出登录？` : ''"
       accept-label="下线"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmOffline"
       @update:model-value="(open) => { if (!open) pendingDevice = null }"
@@ -522,7 +477,7 @@ const identityMeta = computed(() =>
       :message="`将下线除当前设备外的 ${otherDevices.length} 台会话，需要重新登录才能继续使用。`"
       accept-label="全部下线"
       reject-label="取消"
-      accept-severity="danger"
+      accept-color="danger"
       type="warning"
       @accept="confirmBatchOffline"
     />

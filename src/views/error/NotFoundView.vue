@@ -27,14 +27,7 @@ function reLogin() {
       <template #footer>
         <MSpace>
           <MButton label="返回首页" icon="layout-dashboard" @click="goHome" />
-          <MButton
-            v-if="!state.user"
-            label="去登录"
-            icon="login"
-            severity="secondary"
-            outlined
-            @click="reLogin"
-          />
+          <MButton v-if="!state.user" label="去登录" icon="login" @click="reLogin" variant="outlined" />
         </MSpace>
       </template>
     </MResult>

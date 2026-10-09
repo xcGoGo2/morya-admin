@@ -79,10 +79,10 @@ const donutStyle = computed(() => {
 
 /* ---------- 待办 ---------- */
 const todoList = ref(todos.map(t => ({ ...t })))
-const PRIORITY_TAG: Record<string, { label: string, severity: 'danger' | 'warning' | 'success' }> = {
-  high: { label: '高', severity: 'danger' },
-  mid: { label: '中', severity: 'warning' },
-  low: { label: '低', severity: 'success' },
+const PRIORITY_TAG: Record<string, { label: string, type: 'danger' | 'warning' | 'success' }> = {
+  high: { label: '高', type: 'danger' },
+  mid: { label: '中', type: 'warning' },
+  low: { label: '低', type: 'success' },
 }
 
 /* ---------- 最近动态 ---------- */
@@ -90,7 +90,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
   content: a.content,
   date: a.time,
   icon: a.icon,
-  severity: a.severity,
+  type: a.type,
 }))
 </script>
 
@@ -110,7 +110,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
             :trend="`${s.up ? '+' : '-'}${s.trend}`"
             :trend-direction="s.up ? 'up' : 'down'"
             :trend-label="s.hint"
-            :trend-severity="s.up ? 'success' : 'danger'"
+            :trend-type="s.up ? 'success' : 'danger'"
             :icon="s.icon"
             shadow="always"
           />
@@ -198,7 +198,7 @@ const timelineEvents: TimelineEvent[] = activities.map(a => ({
                 <span class="todo__title">{{ t.title }}</span>
                 <MTag
                   :value="PRIORITY_TAG[t.priority].label"
-                  :severity="PRIORITY_TAG[t.priority].severity"
+                  :type="PRIORITY_TAG[t.priority].type"
                   size="small"
                   rounded
                 />

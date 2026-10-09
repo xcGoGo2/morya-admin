@@ -24,7 +24,7 @@ function reload() {
       <template #footer>
         <MSpace>
           <MButton label="刷新页面" icon="refresh" @click="reload" />
-          <MButton label="返回首页" icon="layout-dashboard" severity="secondary" outlined @click="goHome" />
+          <MButton label="返回首页" icon="layout-dashboard" @click="goHome" variant="outlined" />
         </MSpace>
       </template>
     </MResult>
